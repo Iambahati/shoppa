@@ -16,6 +16,7 @@ return [
     */
 
     'guard' => 'web',
+      'auth_middleware' => 'auth',
 
     /*
     |--------------------------------------------------------------------------
@@ -73,7 +74,7 @@ return [
     |
     */
 
-    'home' => '/home',
+    'home' => '/', // overridden per-role at AuthServiceProvider
 
     /*
     |--------------------------------------------------------------------------
@@ -147,13 +148,13 @@ return [
         Features::registration(),
         Features::resetPasswords(),
         // Features::emailVerification(),
-        Features::updateProfileInformation(),
-        Features::updatePasswords(),
-        Features::twoFactorAuthentication([
-            'confirm' => true,
-            'confirmPassword' => true,
-            // 'window' => 0,
-        ]),
+        // Features::updateProfileInformation(), // Sprint 5
+        // Features::updatePasswords(), // Sprint 5
+        // Features::twoFactorAuthentication([   // Sprint 3+
+        //     'confirm' => true,
+        //     'confirmPassword' => true,
+        //     // 'window' => 0,
+        // ]),
     ],
 
 ];

@@ -1,0 +1,19 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Enums\RoleName;
+use App\Models\Role;
+use Illuminate\Database\Seeder;
+
+class RoleSeeder extends Seeder
+{
+    public function run(): void
+    {
+        foreach (RoleName::cases() as $role) {
+            Role::firstOrCreate(['name' => $role->value]);
+        }
+
+        $this->command->info('Roles seeded: ' . collect(RoleName::cases())->pluck('value')->implode(', '));
+    }
+}
