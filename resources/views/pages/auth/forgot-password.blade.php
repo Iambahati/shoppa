@@ -13,7 +13,7 @@
         <x-ui-button type="submit" class="w-full justify-center">Send reset link</x-ui-button>
     </form>
 
-    <p class="mt-6 text-center text-sm text-stone-500">
-        <a href="{{ route('login') }}" class="font-medium text-sky-500 hover:text-sky-600 transition-colors">← Back to sign in</a>
+    <p class="mt-6 text-center text-sm text-slate-500">
+        <a href="{{ route('login') }}" class="font-medium text-sky-500 transition-colors hover:text-sky-600">← Back to sign in</a>
     </p>
 </x-layouts.guest>

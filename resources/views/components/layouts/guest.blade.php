@@ -23,57 +23,80 @@
     @vite(['resources/js/app.js'])
 </head>
 
-<body class="h-full bg-white font-sans antialiased">
+<body class="h-full bg-slate-900 font-sans antialiased">
 
     @include('partials.flash-message')
 
     <div class="min-h-full flex flex-col lg:flex-row">
-        {{-- Left: Brand illustration & messaging --}}
-        <div class="relative hidden lg:flex lg:w-1/2 xl:w-[55%] items-center justify-center overflow-hidden bg-gradient-to-br from-sky-50 via-white to-pink-50">
-            {{-- Decorative soft shapes --}}
-            <div class="absolute -top-[15%] -left-[10%] w-[70%] h-[70%] rounded-full bg-sky-100/50 blur-3xl" aria-hidden="true"></div>
-            <div class="absolute -bottom-[10%] -right-[10%] w-[60%] h-[60%] rounded-full bg-pink-100/50 blur-3xl" aria-hidden="true"></div>
-            <div class="absolute top-[15%] right-[10%] w-40 h-40 rounded-full bg-sky-200/40 blur-2xl" aria-hidden="true"></div>
-            <div class="absolute bottom-[25%] left-[8%] w-24 h-24 rounded-full bg-pink-200/40 blur-2xl" aria-hidden="true"></div>
 
-            {{-- Content --}}
-            <div class="relative z-10 max-w-md px-12 text-center">
-                {{-- Friendly illustration --}}
-                <div class="mb-8 flex justify-center">
-                    <svg viewBox="0 0 240 200" class="w-56 h-auto" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        {{-- Background circle --}}
-                        <circle cx="120" cy="100" r="90" fill="#e0f2fe" />
-                        <circle cx="120" cy="100" r="65" fill="#bae6fd" opacity="0.5" />
+        {{-- Left: Dark brand panel --}}
+        <div class="relative hidden lg:flex lg:w-[45%] xl:w-[40%] flex-col justify-between p-12 overflow-hidden bg-slate-900 border-r border-white/5">
+            {{-- Glow blobs --}}
+            <div class="pointer-events-none absolute -top-32 -left-32 h-80 w-80 rounded-full bg-sky-500/10 blur-3xl" aria-hidden="true"></div>
+            <div class="pointer-events-none absolute -bottom-24 -right-24 h-64 w-64 rounded-full bg-sky-500/8 blur-3xl" aria-hidden="true"></div>
 
-                        {{-- Shopping bag body --}}
-                        <rect x="85" y="95" width="70" height="55" rx="8" fill="#38bdf8" opacity="0.9" />
-                        <rect x="85" y="95" width="70" height="55" rx="8" stroke="#0ea5e9" stroke-width="2" opacity="0.3" />
+            {{-- Logo --}}
+            <div class="relative z-10">
+                <a href="{{ route('home') }}" class="inline-flex items-center gap-2.5 group">
+                    <span class="text-xl font-bold tracking-tight text-white group-hover:text-sky-300 transition-colors">Shoppa</span>
+                    <span class="inline-flex items-center rounded-full bg-sky-500/20 px-2 py-0.5 text-xs font-semibold text-sky-400 ring-1 ring-sky-500/30">
+                        Verified
+                    </span>
+                </a>
+            </div>
 
-                        {{-- Bag handles --}}
-                        <path d="M100 95V80a20 20 0 0 1 40 0v15" stroke="#0ea5e9" stroke-width="3" stroke-linecap="round" fill="none" />
-
-                        {{-- Decorative blush dots --}}
-                        <circle cx="55" cy="70" r="14" fill="#fbcfe8" />
-                        <circle cx="190" cy="55" r="10" fill="#bae6fd" />
-                        <circle cx="195" cy="145" r="12" fill="#fbcfe8" opacity="0.7" />
-                        <circle cx="50" cy="150" r="8" fill="#bae6fd" opacity="0.6" />
-
-                        {{-- Heart on bag --}}
-                        <path d="M120 128c-6-6-16-6-22 0s-6 16 0 22l22 22 22-22c6-6 6-16 0-22s-16-6-22 0z" fill="#f472b6" opacity="0.85" />
-                    </svg>
+            {{-- Centre copy --}}
+            <div class="relative z-10 space-y-8">
+                <div>
+                    <h2 class="text-4xl font-bold text-white leading-tight">
+                        Electronics you can<br>
+                        <span class="text-sky-400">actually trust.</span>
+                    </h2>
+                    <p class="mt-4 max-w-xs text-base leading-relaxed text-slate-400">
+                        Every device on Shoppa is physically inspected before it goes live. No fakes. No surprises.
+                    </p>
                 </div>
 
-                <h2 class="text-3xl font-bold text-slate-800 mb-3">Welcome to Shoppa</h2>
-                <p class="text-lg text-slate-600 mb-2">Join thriving vendors & shoppers every day.</p>
-                <p class="text-slate-500">Track orders, manage vendors, and find deals fast.</p>
+                <ul class="space-y-4">
+                    @foreach([
+                        'Physical inspection before every listing',
+                        'Escrow payment — released only after you confirm',
+                        'QR Trust Certificate, lookupable by IMEI',
+                    ] as $point)
+                    <li class="flex items-start gap-3">
+                        <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sky-500/20">
+                            <svg class="h-3 w-3 text-sky-400" fill="none" viewBox="0 0 12 12" aria-hidden="true">
+                                <path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                        <span class="text-sm text-slate-300">{{ $point }}</span>
+                    </li>
+                    @endforeach
+                </ul>
+
+                {{-- Stat strip --}}
+                <div class="grid grid-cols-3 gap-4 border-t border-white/5 pt-8">
+                    @foreach([['700+', 'Devices verified'], ['98%', 'Buyer satisfaction'], ['0', 'Fakes shipped']] as [$n, $l])
+                    <div>
+                        <p class="text-2xl font-bold text-white tabular-nums">{{ $n }}</p>
+                        <p class="text-xs text-slate-500 mt-0.5">{{ $l }}</p>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+            {{-- Footer --}}
+            <div class="relative z-10">
+                <p class="text-xs text-slate-600">Built for Kenya. Trusted across Africa.</p>
             </div>
         </div>
 
-        {{-- Right: Auth form --}}
-        <div class="flex w-full lg:w-1/2 xl:w-[45%] flex-col justify-center items-center px-6 py-10 sm:px-12 lg:px-16 xl:px-20 bg-stone-50/60">
+        {{-- Right: Form panel --}}
+        <div class="flex flex-1 flex-col items-center justify-center bg-slate-50 px-6 py-10 sm:px-12">
             <div class="w-full max-w-sm">
+
                 {{-- Mobile brand strip --}}
-                <div class="lg:hidden mb-8 text-center">
+                <div class="mb-8 text-center lg:hidden">
                     <a href="{{ route('home') }}" class="inline-flex items-center gap-2 group">
                         <span class="text-2xl font-bold tracking-tight text-slate-900 group-hover:text-sky-600 transition-colors">
                             Shoppa
@@ -83,12 +106,12 @@
                 </div>
 
                 {{-- Form card --}}
-                <div class="bg-white rounded-2xl p-7 sm:p-8 shadow-sm ring-1 ring-stone-950/5">
+                <div class="rounded-2xl bg-white px-7 py-8 shadow-sm ring-1 ring-slate-900/5 sm:px-8">
                     @isset($heading)
                     <h1 class="text-2xl font-bold text-slate-900">{{ $heading }}</h1>
                     @endisset
                     @isset($subheading)
-                    <p class="mt-1.5 text-sm text-slate-500 mb-6">{{ $subheading }}</p>
+                    <p class="mb-6 mt-1.5 text-sm text-slate-500">{{ $subheading }}</p>
                     @endisset
                     @if(!isset($heading) && !isset($subheading))
                     <div class="mb-2"></div>
@@ -96,8 +119,14 @@
 
                     {{ $slot }}
                 </div>
+
+                {{-- Back link for mobile --}}
+                <p class="mt-6 text-center text-xs text-slate-400 lg:hidden">
+                    <a href="{{ route('home') }}" class="hover:text-slate-600 transition-colors">← Back to home</a>
+                </p>
             </div>
         </div>
+
     </div>
 
 </body>
