@@ -1,0 +1,50 @@
+name: Deploy — Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  deploy:
+    name: Deploy to app.shoppa.co.ke
+    needs: ci
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+            cd /var/www/shoppa-prod
+
+            git fetch origin main
+            git checkout main
+            git reset --hard origin/main
+
+            export APP_VERSION=$(git rev-parse --short HEAD)
+
+            docker compose -f docker-compose.prod.yml build --no-cache app
+
+            docker compose -f docker-compose.prod.yml up -d
+
+            docker compose -f docker-compose.prod.yml exec -T app php artisan migrate --force
+            docker compose -f docker-compose.prod.yml exec -T app php artisan config:cache
+            docker compose -f docker-compose.prod.yml exec -T app php artisan route:cache
+            docker compose -f docker-compose.prod.yml exec -T app php artisan view:cache
+
+            echo "Production deploy complete — version ${APP_VERSION} — $(date)"
+
+      - name: Health check
+        run: |
+          sleep 15
+          curl --fail --retry 5 --retry-delay 10 \
+            https://app.shoppa.co.ke/health \
+            -o /dev/null -w "HTTP %{http_code}"

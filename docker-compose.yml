@@ -1,0 +1,64 @@
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: shoppa-app
+    restart: unless-stopped
+    volumes:
+      - app_storage:/var/www/html/storage
+    depends_on:
+      - postgres
+      - redis
+
+  nginx:
+    image: nginx:stable-alpine
+    restart: unless-stopped
+    volumes:
+      - app_storage:/var/www/html/storage:ro
+    depends_on:
+      - app
+
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --save "" --appendonly no
+
+  queue:
+    image: shoppa-app
+    restart: unless-stopped
+    command: php artisan queue:work --sleep=3 --tries=3 --max-time=3600
+    volumes:
+      - app_storage:/var/www/html/storage
+    depends_on:
+      - app
+      - postgres
+      - redis
+
+  scheduler:
+    image: shoppa-app
+    restart: unless-stopped
+    command: >
+      supercronic -quiet
+      <(echo "* * * * * php /var/www/html/artisan schedule:run >> /dev/null 2>&1")
+    volumes:
+      - app_storage:/var/www/html/storage
+    depends_on:
+      - app
+      - postgres
+      - redis
+
+volumes:
+  postgres_data:
+  app_storage:

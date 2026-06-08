@@ -1,0 +1,48 @@
+name: Deploy — Staging
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  deploy:
+    name: Deploy to dev.shoppa.co.ke
+    needs: ci
+    runs-on: ubuntu-latest
+    environment: staging
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+            cd /var/www/shoppa-staging
+
+            git fetch origin develop
+            git checkout develop
+            git reset --hard origin/develop
+
+            docker compose -f docker-compose.staging.yml build --no-cache app
+
+            docker compose -f docker-compose.staging.yml up -d
+
+            docker compose -f docker-compose.staging.yml exec -T app php artisan migrate --force
+            docker compose -f docker-compose.staging.yml exec -T app php artisan config:cache
+            docker compose -f docker-compose.staging.yml exec -T app php artisan route:cache
+            docker compose -f docker-compose.staging.yml exec -T app php artisan view:cache
+
+            echo "Staging deploy complete — $(date)"
+
+      - name: Health check
+        run: |
+          sleep 10
+          curl --fail --retry 3 --retry-delay 5 \
+            https://dev.shoppa.co.ke/health \
+            -o /dev/null -w "HTTP %{http_code}"
