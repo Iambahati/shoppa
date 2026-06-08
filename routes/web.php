@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => redirect()->route('login'))->name('home');
 
+Route::get('/health', fn () => response()->json(['status' => 'ok']))->name('health');
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/buyer.php';
 require __DIR__ . '/vendor.php';
