@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Verifier\DashboardController;
 use App\Http\Controllers\Verifier\InspectionController;
 use App\Http\Controllers\Verifier\QueueController;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,9 @@ Route::prefix('verifier')->name('verifier.')->middleware([
     'verified',
     'role:Super Admin,Admin,Verifier',
 ])->group(function () {
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
 
     Route::get('/queue', [QueueController::class, 'index'])
         ->name('queue');

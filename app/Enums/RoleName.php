@@ -56,10 +56,10 @@ enum RoleName: string
     {
         return match ($this) {
             self::SuperAdmin, self::Admin  => 'admin.dashboard',
-            self::VendorManager           => 'admin.vendors.index',
-            self::Verifier                => 'verifier.queue',
-            self::CustomerService         => 'admin.disputes.index',
-            self::ContentManager          => 'admin.products.index',
+            self::VendorManager           => 'admin.vendor-manager.dashboard',
+            self::Verifier                => 'verifier.dashboard',
+            self::CustomerService         => 'admin.cs.dashboard',
+            self::ContentManager          => 'admin.content.dashboard',
             self::Vendor                  => 'vendor.dashboard',
             self::User, self::Guest       => 'buyer.dashboard',
         };
