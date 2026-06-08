@@ -1,59 +1,55 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <strong>Shoppa</strong> is a feature-rich, role-aware e-commerce dashboard for vendors, buyers, and administrators built with Laravel 12.
 </p>
 
-## About Laravel
+## About Shoppa
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Shoppa emulates a boutique marketplace: buyers place orders and request returns, vendors fulfill shipments, and an admin team manages disputes, products, and promotions. The app arrives with domain models (orders, refunds, shipments, vendors, coupon campaigns, etc.) plus role-driven navigation powered by policy-aware enums and seeders that provision the staff/user roles and relations needed for an admin dashboard and public storefront.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Key highlights:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Multi-tenant user roles (Super Admin, Admin, Vendor, Customer Service, Buyer) with helper enums that drive dashboard redirects and permissions.
+- Rich order lifecycle models (returns, refunds, shipments, commissions) and cascading tables to analyze vendor revenue and customer history.
+- Seeders that prime every model needed to explore the domain (roles, permissions, users, addresses, vendor profiles, etc.).
+- Laravel Fortify authentication with email verification, two-factor auth helpers, and policy-aware user authorization.
 
-## Learning Laravel
+## Getting Started
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+1. Copy the environment file and generate keys:
+   ```bash
+   cp .env.example .env
+   composer install
+   php artisan key:generate
+   ```
+2. Configure your database/queue/MAIL settings in `.env`, then migrate:
+   ```bash
+   php artisan migrate
+   ```
+3. Seed the database (roles, permissions, users, vendors, addresses, etc.):
+   ```bash
+   php artisan db:seed
+   ```
+4. Build assets and serve the app:
+   ```bash
+   npm install
+   npm run dev
+   php artisan serve
+   ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Seeding Models
 
-## Laravel Sponsors
+The `DatabaseSeeder` orchestrates several sub-seeders defined in `database/seeders/`:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- `RoleSeeder`, `PermissionSeeder`, `RolePermissionSeeder` define the role/permission graph.
+- `UserSeeder` and `UserAddressSeeder` create buyers, vendors, and a Super Admin with the required addresses.
+- `VendorSeeder` links vendor users to vendor profiles and attaches demo media.
 
-### Premium Partners
+After running `php artisan db:seed`, you can browse the admin panel at `/admin`, the vendor workspace at `/vendor`, and the buyer experience at `/buyer` using the seeded accounts.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Running & Testing
 
-## Contributing
+- Use `php artisan test` to execute the test suite.
+- To replay jobs/queues: `php artisan queue:work`.
+- Run `php artisan route:list` to inspect registered routes, grouped by middleware and guards.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Enjoy exploring Shoppa!

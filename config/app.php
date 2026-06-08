@@ -1,33 +1,37 @@
 <?php
 
 return [
+    'name' => env('APP_NAME', 'Shoppa'),
+    'tagline' => 'Trust + Verification + Transparent Pricing',
 
-    /*
-    |--------------------------------------------------------------------------
-    | Application Name
-    |--------------------------------------------------------------------------
-    |
-    | This value is the name of your application, which will be used when the
-    | framework needs to place the application's name in a notification or
-    | other UI elements where an application name needs to be displayed.
-    |
-    */
-
-    'name' => env('APP_NAME', 'Laravel'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application Environment
-    |--------------------------------------------------------------------------
-    |
-    | This value determines the "environment" your application is currently
-    | running in. This may determine how you prefer to configure various
-    | services the application utilizes. Set this in your ".env" file.
-    |
-    */
+    'reset_password_token_expiry_in_min' => 15,
+    'frontend_url' => env('APP_FRONTEND_URL', 'http://localhost'),
+    'cnd_url' => env('APP_CDN_URL', '/storage'),
+    'default_timezone' => 'Africa/Nairobi',
+    'default_currency_code' => 'KES',
+    'api_rate_limit_per_minute' => env('APP_API_RATE_LIMIT_PER_MINUTE', 180),
 
     'env' => env('APP_ENV', 'production'),
 
+    'email_logo_url' => env('APP_EMAIL_LOGO_URL'),
+
+    'escrow' => [
+        'release_after_days' => 3,
+    ],
+
+    'verification' => [
+        'fee_min_ksh' => 700,
+        'fee_max_ksh' => 1000,
+    ],
+
+    'commission' => [
+        'default_percent' => 5,
+    ],
+
+    'trust_cert' => [
+        'valid_days' => 90,
+    ],
+    
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode

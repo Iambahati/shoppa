@@ -20,87 +20,87 @@ class RolePermissionSeeder extends Seeder
     private function matrix(): array
     {
         return [
-            RoleName::SuperAdmin => '*',
+            RoleName::SuperAdmin->value => '*',
 
-            RoleName::Admin => [
-                PermissionName::ViewUsers,
-                PermissionName::CreateUsers,
-                PermissionName::EditUsers,
-                PermissionName::ViewRoles,
-                PermissionName::ManageRoles,
-                PermissionName::ViewVendors,
-                PermissionName::CreateVendors,
-                PermissionName::EditVendors,
-                PermissionName::ApproveVendors,
-                PermissionName::ViewProducts,
-                PermissionName::CreateProducts,
-                PermissionName::EditProducts,
-                PermissionName::DeleteProducts,
-                PermissionName::ManageCategories,
-                PermissionName::ViewOrders,
-                PermissionName::ManageOrders,
-                PermissionName::CancelOrders,
-                PermissionName::ViewPayments,
-                PermissionName::ManagePayments,
-                PermissionName::ManageRefunds,
-                PermissionName::ViewCustomerData,
-                PermissionName::ManageDisputes,
-                PermissionName::ManageSupportTickets,
-                PermissionName::ManageShipments,
-                PermissionName::ManageTheftReports,
-                PermissionName::ViewInspections,
+            RoleName::Admin->value => [
+                PermissionName::ViewUsers->value,
+                PermissionName::CreateUsers->value,
+                PermissionName::EditUsers->value,
+                PermissionName::ViewRoles->value,
+                PermissionName::ManageRoles->value,
+                PermissionName::ViewVendors->value,
+                PermissionName::CreateVendors->value,
+                PermissionName::EditVendors->value,
+                PermissionName::ApproveVendors->value,
+                PermissionName::ViewProducts->value,
+                PermissionName::CreateProducts->value,
+                PermissionName::EditProducts->value,
+                PermissionName::DeleteProducts->value,
+                PermissionName::ManageCategories->value,
+                PermissionName::ViewOrders->value,
+                PermissionName::ManageOrders->value,
+                PermissionName::CancelOrders->value,
+                PermissionName::ViewPayments->value,
+                PermissionName::ManagePayments->value,
+                PermissionName::ManageRefunds->value,
+                PermissionName::ViewCustomerData->value,
+                PermissionName::ManageDisputes->value,
+                PermissionName::ManageSupportTickets->value,
+                PermissionName::ManageShipments->value,
+                PermissionName::ManageTheftReports->value,
+                PermissionName::ViewInspections->value,
             ],
 
-            RoleName::VendorManager => [
-                PermissionName::ViewVendors,
-                PermissionName::CreateVendors,
-                PermissionName::EditVendors,
-                PermissionName::ApproveVendors,
-                PermissionName::ViewProducts,
-                PermissionName::EditProducts,
-                PermissionName::ViewOrders,
-                PermissionName::ManageOrders,
+            RoleName::VendorManager->value => [
+                PermissionName::ViewVendors->value,
+                PermissionName::CreateVendors->value,
+                PermissionName::EditVendors->value,
+                PermissionName::ApproveVendors->value,
+                PermissionName::ViewProducts->value,
+                PermissionName::EditProducts->value,
+                PermissionName::ViewOrders->value,
+                PermissionName::ManageOrders->value,
             ],
 
-            RoleName::Verifier => [
-                PermissionName::ViewProducts,
-                PermissionName::VerifyDevices,
-                PermissionName::IssueCerts,
-                PermissionName::ViewInspections,
-                PermissionName::ManageTheftReports,
+            RoleName::Verifier->value => [
+                PermissionName::ViewProducts->value,
+                PermissionName::VerifyDevices->value,
+                PermissionName::IssueCerts->value,
+                PermissionName::ViewInspections->value,
+                PermissionName::ManageTheftReports->value,
             ],
 
-            RoleName::CustomerService => [
-                PermissionName::ViewCustomerData,
-                PermissionName::ViewOrders,
-                PermissionName::ManageSupportTickets,
-                PermissionName::ManageDisputes,
-                PermissionName::ManageRefunds,
+            RoleName::CustomerService->value => [
+                PermissionName::ViewCustomerData->value,
+                PermissionName::ViewOrders->value,
+                PermissionName::ManageSupportTickets->value,
+                PermissionName::ManageDisputes->value,
+                PermissionName::ManageRefunds->value,
             ],
 
-            RoleName::ContentManager => [
-                PermissionName::ViewProducts,
-                PermissionName::CreateProducts,
-                PermissionName::EditProducts,
-                PermissionName::ManageCategories,
-                PermissionName::ContentManage,
+            RoleName::ContentManager->value => [
+                PermissionName::ViewProducts->value,
+                PermissionName::CreateProducts->value,
+                PermissionName::EditProducts->value,
+                PermissionName::ManageCategories->value,
+                PermissionName::ContentManage->value,
             ],
 
-            RoleName::Vendor => [
-                PermissionName::ViewProducts,
-                PermissionName::CreateProducts,
-                PermissionName::EditProducts,
-                PermissionName::DeleteProducts,
-                PermissionName::ViewOrders,
-                PermissionName::ManageOrders,
+            RoleName::Vendor->value => [
+                PermissionName::ViewProducts->value,
+                PermissionName::CreateProducts->value,
+                PermissionName::EditProducts->value,
+                PermissionName::DeleteProducts->value,
+                PermissionName::ViewOrders->value,
+                PermissionName::ManageOrders->value,
             ],
 
-            RoleName::User => [
-                PermissionName::ViewProducts,
+            RoleName::User->value => [
+                PermissionName::ViewProducts->value,
             ],
 
-            RoleName::Guest => [
-                PermissionName::ViewProducts,
+            RoleName::Guest->value => [
+                PermissionName::ViewProducts->value,
             ],
         ];
     }
@@ -117,15 +117,15 @@ class RolePermissionSeeder extends Seeder
         $inserts = [];
 
         foreach ($this->matrix() as $roleName => $assigned) {
-            $role = $roles->get($roleName->value);
+            $role = $roles->get($roleName);
 
             if (! $role) {
-                $this->command->warn("Role [{$roleName->value}] not found — run RoleSeeder first.");
+                $this->command->warn("Role [{$roleName}] not found — run RoleSeeder first.");
                 continue;
             }
 
             $permsToAssign = $assigned === '*' ? $allPerms : collect($assigned)->map(
-                fn (PermissionName $p) => $permissions->get($p->value)
+                fn(string $p) => $permissions->get($p)
             )->filter();
 
             foreach ($permsToAssign as $perm) {

@@ -67,7 +67,7 @@ Each role gets a dedicated page with: greeting header (time-aware), 4 KPI stat t
 | Open disputes | stub `0` |
 | Platform revenue (KSh) | stub `0.00` |
 
-Quick actions: Create user · Manage roles · View activity log · Seed roles (dev only)
+Quick actions: Create user · Manage roles · View activity log
 
 Primary panel: Latest registrations table (user, role, joined).
 
@@ -361,13 +361,12 @@ Add a single `GET /health` route (no auth, no middleware) that returns `200 OK` 
 
 1. **Fix S1 bugs** (5 files, one commit)
 2. **Add health check route** (`routes/web.php`, 2 lines)
-3. **New staff dashboard controllers + routes** (VendorManager, Verifier, CS, ContentManager)
+3. **New staff dashboard controllers + routes + update `RoleName::dashboardRoute()`** (VendorManager, Verifier, CS, ContentManager — routes and enum must land together so redirects resolve immediately)
 4. **Redesign all 9 dashboard views** (impeccable frontend-design, navy sidebar system)
-5. **Update `RoleName::dashboardRoute()`** to point new roles to their new dashboard routes
-6. **Write test suite** (`tests/Feature/Auth/`, `tests/Feature/Dashboard/`, `tests/Feature/Admin/`)
-7. **Docker Compose files** (`docker-compose.yml`, `docker-compose.staging.yml`, `docker-compose.prod.yml`)
-8. **GitHub Actions workflows** (`.github/workflows/ci.yml`, `deploy-staging.yml`, `deploy-prod.yml`)
-9. **`.env.example`** updated with all required variables
+5. **Write test suite** (`tests/Feature/Auth/`, `tests/Feature/Dashboard/`, `tests/Feature/Admin/`)
+6. **Docker Compose files** (`docker-compose.yml`, `docker-compose.staging.yml`, `docker-compose.prod.yml`)
+7. **GitHub Actions workflows** (`.github/workflows/ci.yml`, `deploy-staging.yml`, `deploy-prod.yml`)
+8. **`.env.example`** updated with all required variables
 
 ---
 

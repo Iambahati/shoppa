@@ -13,7 +13,7 @@ export default {
         extend: {
             fontFamily: {
                 // Inter for UI, fallback to system sans
-                sans: ['Inter', 'Inter Variable', ...defaultTheme.fontFamily.sans],
+                sans: ['Nunito', 'Nunito Variable', ...defaultTheme.fontFamily.sans],
                 mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
             },
 
@@ -21,8 +21,9 @@ export default {
                 // Shoppa brand — emerald-based, stone neutrals
                 // These complement Tailwind's built-ins; no overrides needed.
                 shoppa: {
-                    50:  '#effef7',
-                    100: '#dcfce7', // same as emerald-100 — intentional
+                    50:  '#ecfdf5',
+                    100: '#d1fae5',
+                    500: '#10b981',
                     600: '#059669',
                     700: '#047857',
                     900: '#064e3b',
@@ -39,5 +40,6 @@ export default {
 
     plugins: [
         require('@tailwindcss/forms'),
+        
     ],
 }

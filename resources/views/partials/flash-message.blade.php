@@ -3,7 +3,6 @@
         $type    = collect(['success','error','warning','info'])->first(fn($t) => session()->has($t));
         $message = session($type);
     @endphp
-
     <div
         x-data="{ show: true }"
         x-show="show"
@@ -14,22 +13,16 @@
         x-transition:leave="transition ease-in duration-200"
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0"
-        class="fixed bottom-5 right-5 z-50 max-w-sm w-full"
-        role="status"
-        aria-live="polite"
+        class="fixed bottom-5 right-5 z-50 w-full max-w-sm"
+        role="status" aria-live="polite"
     >
-        <x-ui.alert :type="$type">
-            <div class="flex items-start justify-between gap-3">
+        <x-ui-alert :type="$type">
+            <div class="flex items-start justify-between gap-3 w-full">
                 <span>{{ $message }}</span>
-                <button
-                    type="button"
-                    @click="show = false"
-                    class="shrink-0 text-current opacity-60 hover:opacity-100 transition-opacity"
-                    aria-label="Dismiss"
-                >
-                    <x-nav.icon name="x" class="h-4 w-4" />
+                <button type="button" @click="show = false" class="shrink-0 opacity-60 hover:opacity-100 transition-opacity" aria-label="Dismiss">
+                    <x-nav-icon name="x" class="h-4 w-4" />
                 </button>
             </div>
-        </x-ui.alert>
+        </x-ui-alert>
     </div>
 @endif
