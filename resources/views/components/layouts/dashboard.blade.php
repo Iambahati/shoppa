@@ -7,7 +7,7 @@
     <title>{{ isset($title) ? $title . ' — ' : '' }}{{ config('shoppa.name') }} Staff</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="h-full" x-data="{ sidebarOpen: false }">
+<body class="h-full bg-slate-50" x-data="{ sidebarOpen: false }">
 
     <div x-show="sidebarOpen" x-transition.opacity @click="sidebarOpen = false"
         class="fixed inset-0 z-40 bg-slate-950/40 lg:hidden" aria-hidden="true"></div>
