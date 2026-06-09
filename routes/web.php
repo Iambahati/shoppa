@@ -12,7 +12,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', fn() => redirect()->route('login'))->name('home');
+Route::get('/', function () {
+    if (auth()->check()) {
+        $role = auth()->user()->roleName();
+        return redirect()->route($role ? $role->dashboardRoute() : 'buyer.dashboard');
+    }
+    return redirect()->route('login');
+})->name('home');
 
 Route::get('/health', fn () => response()->json(['status' => 'ok']))->name('health');
 

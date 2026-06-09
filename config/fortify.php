@@ -74,7 +74,7 @@ return [
     |
     */
 
-    'home' => '/', // overridden per-role at AuthServiceProvider
+    'home' => '/dashboard',
 
     /*
     |--------------------------------------------------------------------------

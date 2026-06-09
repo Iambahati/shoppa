@@ -19,6 +19,6 @@ class LoginResponse implements LoginResponseContract
             ? route($role->dashboardRoute())
             : route('buyer.dashboard');
 
-        return redirect()->intended($redirectUrl);
+        return redirect()->to($redirectUrl);
     }
 }
