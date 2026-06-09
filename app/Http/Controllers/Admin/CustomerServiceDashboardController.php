@@ -4,39 +4,58 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
 class CustomerServiceDashboardController extends Controller
 {
     public function index(Request $request): View
     {
+        $hasOrders  = Schema::hasTable('orders');
+        $hasRefunds = Schema::hasTable('order_refunds');
+
+        $openDisputes = ($hasOrders)
+            ? rescue(fn() => \App\Models\Order::whereHas('status', fn($q) => $q->where('name', 'disputed'))->with(['user', 'status', 'items.product'])->latest()->get(), new Collection(), false)
+            : new Collection();
+
+        $resolvedToday = $hasOrders
+            ? rescue(fn() => \App\Models\Order::whereHas('status', fn($q) => $q->whereIn('name', ['completed', 'cancelled']))->whereDate('updated_at', today())->count(), 0, false)
+            : 0;
+
+        $pendingRefunds = $hasRefunds
+            ? rescue(fn() => \App\Models\OrderRefund::whereHas('status', fn($q) => $q->where('name', 'pending'))->count(), 0, false)
+            : 0;
+
         $stats = [
-            'open_disputes'   => 7,
-            'resolved_today'  => 5,
-            'pending_refunds' => 3,
-            'avg_resolution'  => '2.4d',
+            'open_disputes'   => $openDisputes->count(),
+            'resolved_today'  => $resolvedToday,
+            'pending_refunds' => $pendingRefunds,
+            'avg_resolution'  => '—',
         ];
 
-        // 7-day resolved disputes for sparkline
-        $chartData = [4, 6, 3, 8, 5, 7, 5];
+        $chartData = $hasOrders
+            ? array_map(fn($i) => rescue(fn() => \App\Models\Order::whereHas('status', fn($q) => $q->whereIn('name', ['completed', 'cancelled']))->whereDate('updated_at', now()->subDays($i))->count(), 0, false), range(6, 0))
+            : array_fill(0, 7, 0);
 
-        // Urgency breakdown for visual tiles
-        $urgencyBreakdown = [
-            'high'   => 2,
-            'medium' => 3,
-            'low'    => 2,
-        ];
+        $urgencyBreakdown = $openDisputes->reduce(function ($carry, $dispute) {
+            $age      = $dispute->created_at->diffInHours(now());
+            $priority = $age >= 24 ? 'high' : ($age >= 8 ? 'medium' : 'low');
+            $carry[$priority]++;
+            return $carry;
+        }, ['high' => 0, 'medium' => 0, 'low' => 0]);
 
-        $openDisputes = collect([
-            ['id' => 'DSP-441', 'order_id' => 'ORD-4512', 'buyer' => 'Amara Ochieng',  'reason' => 'Item not as described – iPhone screen has dead pixels', 'priority' => 'high',   'age' => '2h ago'],
-            ['id' => 'DSP-440', 'order_id' => 'ORD-4498', 'buyer' => 'David Kamau',    'reason' => 'Package not received after 7 days',                     'priority' => 'high',   'age' => '6h ago'],
-            ['id' => 'DSP-438', 'order_id' => 'ORD-4471', 'buyer' => 'Grace Muthoni',  'reason' => 'Refund not processed after return',                      'priority' => 'medium', 'age' => '1d ago'],
-            ['id' => 'DSP-436', 'order_id' => 'ORD-4455', 'buyer' => 'John Otieno',    'reason' => 'Battery health lower than listed grade',                  'priority' => 'medium', 'age' => '2d ago'],
-            ['id' => 'DSP-433', 'order_id' => 'ORD-4419', 'buyer' => 'Stella Wanjiku', 'reason' => 'IMEI mismatch with certified device',                    'priority' => 'low',    'age' => '3d ago'],
-        ]);
+        $disputesWithPriority = $openDisputes->take(5)->map(function ($dispute) {
+            $age = $dispute->created_at->diffInHours(now());
+            return [
+                'model'    => $dispute,
+                'priority' => $age >= 24 ? 'high' : ($age >= 8 ? 'medium' : 'low'),
+                'age'      => $dispute->created_at->diffForHumans(),
+            ];
+        });
 
         return view('pages.admin.cs.dashboard', compact(
-            'stats', 'chartData', 'urgencyBreakdown', 'openDisputes'
+            'stats', 'chartData', 'urgencyBreakdown', 'openDisputes', 'disputesWithPriority'
         ));
     }
 }

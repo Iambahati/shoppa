@@ -25,8 +25,6 @@
             :value="number_format($stats['total_products'])"
             icon="package"
             icon-color="blue"
-            trend="+14 today"
-            trend-dir="up"
             :glow-first="true"
             style="animation-delay: 0ms"
         />
@@ -42,8 +40,6 @@
             :value="(string) $stats['published_today']"
             icon="layers"
             icon-color="emerald"
-            trend="+40% vs yesterday"
-            trend-dir="up"
             :sparkline="implode(',', $chartData)"
             style="animation-delay: 200ms"
         />
@@ -90,20 +86,39 @@
             <h3 class="text-sm font-semibold text-white">Recently submitted products</h3>
             <a href="{{ route('admin.products.index') }}" class="text-xs font-medium text-sky-400 transition-colors hover:text-sky-300">View all</a>
         </div>
-        <ul role="list" class="divide-y divide-white/5">
-            @foreach($recentProducts as $product)
-                <li class="flex items-center gap-4 px-6 py-3.5 transition-colors hover:bg-white/5">
-                    <div class="min-w-0 flex-1">
-                        <p class="truncate text-sm font-medium text-white">{{ $product['name'] }}</p>
-                        <p class="text-xs text-slate-500">
-                            {{ $product['vendor'] }} &bull; {{ $product['category'] }} &bull; {{ $product['age'] }}
-                        </p>
-                    </div>
-                    <x-trust-cert-badge :status="$product['status']" />
-                    <a href="{{ route('admin.products.index') }}" class="shrink-0 text-xs font-medium text-sky-400 hover:text-sky-300">Review →</a>
-                </li>
-            @endforeach
-        </ul>
+        @if($recentProducts->isEmpty())
+            <div class="flex flex-col items-center justify-center px-6 py-16 text-center">
+                <svg class="h-16 w-16 text-slate-700" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                    <rect x="8" y="8" width="48" height="48" rx="6" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M8 24 L56 24" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2"/>
+                    <path d="M8 40 L56 40" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2"/>
+                    <path d="M24 8 L24 56" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2"/>
+                    <path d="M40 8 L40 56" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2"/>
+                    <circle cx="32" cy="32" r="8" fill="#0f172a" stroke="currentColor" stroke-width="1.5"/>
+                    <line x1="32" y1="28" x2="32" y2="36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    <line x1="28" y1="32" x2="36" y2="32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                <p class="mt-4 text-sm font-semibold text-slate-300">No products submitted yet</p>
+                <p class="mt-1 text-xs text-slate-500">Products will appear here as vendors submit them for review.</p>
+            </div>
+        @else
+            <ul role="list" class="divide-y divide-white/5">
+                @foreach($recentProducts as $product)
+                    <li class="flex items-center gap-4 px-6 py-3.5 transition-colors hover:bg-white/[0.03]">
+                        <div class="min-w-0 flex-1">
+                            <p class="truncate text-sm font-medium text-white">{{ $product->name }}</p>
+                            <p class="text-xs text-slate-500">
+                                {{ $product->vendor?->name ?? 'Unknown vendor' }}
+                                &bull; {{ $product->category?->name ?? 'Uncategorized' }}
+                                &bull; {{ $product->created_at->diffForHumans() }}
+                            </p>
+                        </div>
+                        <x-trust-cert-badge :status="$product->verification_status" />
+                        <a href="{{ route('admin.products.index') }}" class="shrink-0 text-xs font-medium text-sky-400 hover:text-sky-300">Review →</a>
+                    </li>
+                @endforeach
+            </ul>
+        @endif
     </div>
 
 </x-layouts.dashboard>

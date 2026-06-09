@@ -25,8 +25,6 @@
             :value="(string) $stats['pending_applications']"
             icon="store"
             icon-color="amber"
-            trend="+3 today"
-            trend-dir="neutral"
             :glow-first="true"
             style="animation-delay: 0ms"
         />
@@ -35,8 +33,6 @@
             :value="(string) $stats['active_vendors']"
             icon="users"
             icon-color="emerald"
-            trend="+12 this week"
-            trend-dir="up"
             :sparkline="implode(',', $chartData)"
             style="animation-delay: 100ms"
         />
@@ -52,8 +48,6 @@
             :value="(string) $stats['approvals_this_week']"
             icon="package"
             icon-color="blue"
-            trend="+4 vs last week"
-            trend-dir="up"
             style="animation-delay: 300ms"
         />
     </div>
@@ -89,7 +83,7 @@
         </div>
     </div>
 
-    {{-- ── PENDING APPLICATIONS TABLE ───────────────────────────────────── --}}
+    {{-- ── PENDING APPLICATIONS ─────────────────────────────────────────── --}}
     <div class="overflow-hidden rounded-2xl bg-slate-800 ring-1 ring-white/5">
         <div class="flex items-center justify-between border-b border-white/5 px-6 py-4">
             <h3 class="text-sm font-semibold text-white">Pending applications</h3>
@@ -97,25 +91,30 @@
         </div>
 
         @if($pendingVendors->isEmpty())
-            <div class="px-6 py-14 text-center">
-                <x-nav-icon name="store" class="mx-auto h-8 w-8 text-slate-600" />
-                <p class="mt-3 text-sm text-slate-400">No pending applications right now.</p>
+            <div class="flex flex-col items-center justify-center px-6 py-16 text-center">
+                <svg class="h-16 w-16 text-slate-700" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                    <rect x="8" y="20" width="48" height="36" rx="6" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M20 20 V14 C20 10.686 22.686 8 26 8 H38 C41.314 8 44 10.686 44 14 V20" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M26 36 L30 40 L38 32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <p class="mt-4 text-sm font-semibold text-slate-300">No pending applications</p>
+                <p class="mt-1 text-xs text-slate-500">New vendor applications will appear here for review.</p>
             </div>
         @else
             <ul role="list" class="divide-y divide-white/5">
                 @foreach($pendingVendors as $vendor)
-                    <li class="flex items-center gap-4 px-6 py-3.5 transition-colors hover:bg-white/5">
+                    @php $hasDocs = \Illuminate\Support\Facades\Schema::hasTable('media') ? $vendor->hasMedia('kyc_documents') : false; @endphp
+                    <li class="flex items-center gap-4 px-6 py-3.5 transition-colors hover:bg-white/[0.03]">
                         <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-500/15 text-sm font-bold text-amber-400">
-                            {{ substr($vendor['name'], 0, 1) }}
+                            {{ substr($vendor->name, 0, 1) }}
                         </div>
                         <div class="min-w-0 flex-1">
-                            <p class="truncate text-sm font-medium text-white">{{ $vendor['name'] }}</p>
-                            <p class="text-xs text-slate-500">{{ $vendor['owner'] }} &bull; {{ $vendor['category'] }}</p>
+                            <p class="truncate text-sm font-medium text-white">{{ $vendor->name }}</p>
+                            <p class="text-xs text-slate-500">{{ $vendor->user?->name ?? 'Unknown' }} &bull; {{ $vendor->created_at->diffForHumans() }}</p>
                         </div>
                         <div class="flex shrink-0 items-center gap-2">
-                            <span class="h-2 w-2 rounded-full {{ $vendor['docs'] ? 'bg-emerald-400' : 'bg-amber-400' }}"
-                                  title="{{ $vendor['docs'] ? 'Documents complete' : 'Missing documents' }}"></span>
-                            <span class="text-xs text-slate-500">{{ $vendor['applied'] }}</span>
+                            <span class="h-2 w-2 rounded-full {{ $hasDocs ? 'bg-emerald-400' : 'bg-amber-400' }}"
+                                  title="{{ $hasDocs ? 'Documents complete' : 'Missing documents' }}"></span>
                             <x-ui-badge color="amber" size="xs">Pending</x-ui-badge>
                         </div>
                         <a href="{{ route('admin.vendors.index') }}" class="shrink-0 text-xs font-medium text-sky-400 transition-colors hover:text-sky-300">Review →</a>

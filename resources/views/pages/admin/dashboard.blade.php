@@ -57,8 +57,6 @@
             :value="number_format($stats['total_users'])"
             icon="users"
             icon-color="blue"
-            trend="+8.2% this month"
-            trend-dir="up"
             :sparkline="implode(',', $chartData)"
             :glow-first="true"
             style="animation-delay: 0ms"
@@ -68,8 +66,6 @@
             :value="(string) $stats['pending_vendor_apps']"
             icon="store"
             icon-color="amber"
-            trend="+3 this week"
-            trend-dir="neutral"
             style="animation-delay: 100ms"
         />
         <x-card-stat-card
@@ -77,8 +73,6 @@
             :value="(string) $stats['orders_today']"
             icon="box"
             icon-color="emerald"
-            trend="+18% vs yesterday"
-            trend-dir="up"
             :sparkline="implode(',', $chartData)"
             style="animation-delay: 200ms"
         />
@@ -87,8 +81,6 @@
             :value="(string) $stats['disputes_open']"
             icon="flag"
             icon-color="red"
-            trend="–1 since yesterday"
-            trend-dir="down"
             style="animation-delay: 300ms"
         />
     </div>
@@ -123,19 +115,28 @@
                 <p class="text-xs text-slate-400">orders this month</p>
             </div>
         </div>
-        <div class="px-6 pt-4 pb-1">
-            <svg viewBox="0 0 300 64" class="h-16 w-full" preserveAspectRatio="none" aria-hidden="true">
-                <defs>
-                    <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%"   stop-color="#38bdf8" stop-opacity="0.3"/>
-                        <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.02"/>
-                    </linearGradient>
-                </defs>
-                <polygon points="{{ $fillStr }}" fill="url(#areaGrad)" />
-                <polyline points="{{ $lineStr }}" fill="none" stroke="#38bdf8" stroke-width="1.5"
-                          stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-        </div>
+        @if($totalOrders > 0)
+            <div class="px-6 pt-4 pb-1">
+                <svg viewBox="0 0 300 64" class="h-16 w-full" preserveAspectRatio="none" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%"   stop-color="#38bdf8" stop-opacity="0.3"/>
+                            <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.02"/>
+                        </linearGradient>
+                    </defs>
+                    <polygon points="{{ $fillStr }}" fill="url(#areaGrad)" />
+                    <polyline points="{{ $lineStr }}" fill="none" stroke="#38bdf8" stroke-width="1.5"
+                              stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+        @else
+            <div class="flex flex-col items-center justify-center py-8 px-6">
+                <svg class="h-12 w-full opacity-20" viewBox="0 0 300 48" preserveAspectRatio="none" aria-hidden="true">
+                    <line x1="0" y1="24" x2="300" y2="24" stroke="#38bdf8" stroke-width="1" stroke-dasharray="4,4"/>
+                </svg>
+                <p class="mt-2 text-xs text-slate-500">No orders recorded yet</p>
+            </div>
+        @endif
         <div class="flex items-center justify-between border-t border-white/5 px-6 py-3 text-xs text-slate-500">
             <span>30 days ago</span>
             <span>Today</span>
@@ -151,23 +152,35 @@
                 <h3 class="text-sm font-semibold text-white">Recent registrations</h3>
                 <a href="{{ route('admin.users.index') }}" class="text-xs font-medium text-sky-400 transition-colors hover:text-sky-300">View all</a>
             </div>
-            <ul role="list" class="divide-y divide-white/5">
-                @foreach($recentUsers as $u)
-                    <li class="flex items-center gap-3 px-6 py-3 transition-colors hover:bg-white/5">
-                        <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sky-600 text-xs font-semibold uppercase text-white">
-                            {{ substr($u['name'], 0, 2) }}
-                        </div>
-                        <div class="min-w-0 flex-1">
-                            <p class="truncate text-sm font-medium text-white">{{ $u['name'] }}</p>
-                            <p class="truncate text-xs text-slate-500">{{ $u['email'] }}</p>
-                        </div>
-                        <div class="shrink-0 text-right">
-                            <p class="text-xs font-medium text-slate-300">{{ $u['role'] }}</p>
-                            <p class="text-xs text-slate-500">{{ $u['joined'] }}</p>
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
+            @if($recentUsers->isEmpty())
+                <div class="flex flex-col items-center justify-center px-6 py-12 text-center">
+                    <svg class="h-14 w-14 text-slate-700" viewBox="0 0 56 56" fill="none" aria-hidden="true">
+                        <circle cx="28" cy="28" r="27" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3"/>
+                        <circle cx="28" cy="22" r="7" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M12 44c0-8.837 7.163-16 16-16s16 7.163 16 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    <p class="mt-3 text-sm font-medium text-slate-400">No users yet</p>
+                    <p class="mt-1 text-xs text-slate-600">New registrations will appear here</p>
+                </div>
+            @else
+                <ul role="list" class="divide-y divide-white/5">
+                    @foreach($recentUsers as $u)
+                        <li class="flex items-center gap-3 px-6 py-3 transition-colors hover:bg-white/[0.03]">
+                            <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sky-600 text-xs font-semibold uppercase text-white">
+                                {{ substr($u->name, 0, 2) }}
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <p class="truncate text-sm font-medium text-white">{{ $u->name }}</p>
+                                <p class="truncate text-xs text-slate-500">{{ $u->email }}</p>
+                            </div>
+                            <div class="shrink-0 text-right">
+                                <p class="text-xs font-medium text-slate-300">{{ $u->role?->name ?? 'Unknown' }}</p>
+                                <p class="text-xs text-slate-500">{{ $u->created_at->diffForHumans() }}</p>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
         </div>
 
         {{-- Vendor pipeline --}}

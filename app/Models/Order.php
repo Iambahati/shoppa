@@ -2,7 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
@@ -20,7 +25,7 @@ class Order extends Model
             'total_amount' => 'decimal:2',
         ];
     }
-    
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -41,15 +46,9 @@ class Order extends Model
         return $this->hasOne(OrderShipment::class);
     }
 
-     public function payment(): HasOne
+    public function payment(): HasOne
     {
         return $this->hasOne(Payment::class);
-    }
-
-    public function returns(): HasMany
-    {
-        return $this->hasMany(OrderReturn::class, 'order_item_id')
-            ->through('items');
     }
 
     public function formattedTotal(): string

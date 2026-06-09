@@ -3,43 +3,37 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
     public function index(Request $request): View
     {
+        $hasOrders = Schema::hasTable('orders');
+
         $stats = [
-            'total_users'         => 1247,
-            'pending_vendor_apps' => 8,
-            'orders_today'        => 34,
-            'disputes_open'       => 3,
+            'total_users'         => User::count(),
+            'pending_vendor_apps' => Vendor::where('status', 'pending')->count(),
+            'orders_today'        => $hasOrders ? rescue(fn() => \App\Models\Order::whereDate('created_at', today())->count(), 0, false) : 0,
+            'disputes_open'       => $hasOrders ? rescue(fn() => \App\Models\Order::whereHas('status', fn($q) => $q->where('name', 'disputed'))->count(), 0, false) : 0,
         ];
 
-        // 7-day order volume for KPI sparkline
-        $chartData = [18, 24, 19, 31, 28, 34, 41];
+        $orderVolume30d = $hasOrders
+            ? array_map(fn($i) => rescue(fn() => \App\Models\Order::whereDate('created_at', now()->subDays($i))->count(), 0, false), range(29, 0))
+            : array_fill(0, 30, 0);
+        $chartData = array_slice($orderVolume30d, -7);
 
-        // 30-day order volume for area chart
-        $orderVolume30d = [12,15,11,18,22,28,19,14,17,20,24,31,27,21,18,22,19,28,34,32,25,21,19,24,29,36,41,31,28,34];
-
-        // Vendor application pipeline
         $vendorPipeline = [
-            'pending'  => 8,
-            'approved' => 94,
-            'rejected' => 17,
+            'pending'  => Vendor::where('status', 'pending')->count(),
+            'approved' => Vendor::where('status', 'approved')->count(),
+            'rejected' => Vendor::where('status', 'rejected')->count(),
         ];
 
-        $recentUsers = collect([
-            ['name' => 'Amara Ochieng',  'email' => 'amara@example.co.ke',     'role' => 'Buyer',          'joined' => '2 min ago'],
-            ['name' => 'David Kimani',   'email' => 'dkimani@example.co.ke',   'role' => 'Vendor',         'joined' => '14 min ago'],
-            ['name' => 'Faith Wanjiru',  'email' => 'faith.w@example.co.ke',   'role' => 'Buyer',          'joined' => '1 hr ago'],
-            ['name' => 'Samuel Otieno',  'email' => 'samotieno@example.co.ke', 'role' => 'Buyer',          'joined' => '2 hrs ago'],
-            ['name' => 'Joyce Njeri',    'email' => 'jnjeri@example.co.ke',    'role' => 'Vendor',         'joined' => '3 hrs ago'],
-            ['name' => 'Brian Mwangi',   'email' => 'bmwangi@example.co.ke',   'role' => 'Buyer',          'joined' => 'Yesterday'],
-            ['name' => 'Cynthia Akinyi', 'email' => 'cakinyi@example.co.ke',   'role' => 'Buyer',          'joined' => 'Yesterday'],
-            ['name' => 'Peter Mwangi',   'email' => 'pmwangi@example.co.ke',   'role' => 'Content Manager','joined' => '2 days ago'],
-        ]);
+        $recentUsers = User::with('role')->latest()->take(8)->get();
 
         return view('pages.admin.dashboard', compact(
             'stats', 'chartData', 'orderVolume30d', 'vendorPipeline', 'recentUsers'

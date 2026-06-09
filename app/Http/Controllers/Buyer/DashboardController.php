@@ -4,31 +4,36 @@ namespace App\Http\Controllers\Buyer;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
     public function index(Request $request): View
     {
-        $user = $request->user();
+        $user      = $request->user();
+        $hasOrders = Schema::hasTable('orders');
+        $hasWish   = Schema::hasTable('wishlists');
 
         $stats = [
-            'active_orders'    => 2,
-            'total_orders'     => 11,
-            'wishlist_count'   => 8,
-            'devices_verified' => 9,
+            'active_orders'    => $hasOrders ? rescue(fn() => \App\Models\Order::where('user_id', $user->id)->whereHas('status', fn($q) => $q->whereIn('name', ['pending', 'processing', 'shipped']))->count(), 0, false) : 0,
+            'total_orders'     => $hasOrders ? rescue(fn() => \App\Models\Order::where('user_id', $user->id)->count(), 0, false) : 0,
+            'wishlist_count'   => $hasWish   ? rescue(fn() => \App\Models\Wishlist::where('user_id', $user->id)->count(), 0, false) : 0,
+            'devices_verified' => $hasOrders ? rescue(fn() => \App\Models\Order::where('user_id', $user->id)->whereHas('status', fn($q) => $q->where('name', 'completed'))->count(), 0, false) : 0,
         ];
 
-        // 7-day order activity for sparkline
-        $chartData = [1, 0, 2, 1, 3, 1, 2];
+        $chartData = array_fill(0, 7, 0);
+        if ($hasOrders) {
+            $chartData = array_map(
+                fn($i) => rescue(fn() => \App\Models\Order::where('user_id', $user->id)->whereDate('created_at', now()->subDays($i))->count(), 0, false),
+                range(6, 0)
+            );
+        }
 
-        $recentOrders = collect([
-            ['id' => 'ORD-4821', 'item' => 'iPhone 14 Pro Max 256GB',    'amount' => 89500,  'status' => 'Delivered',  'status_color' => 'emerald', 'age' => '2 days ago'],
-            ['id' => 'ORD-4756', 'item' => 'Samsung Galaxy S23 Ultra',   'amount' => 74000,  'status' => 'In Transit', 'status_color' => 'blue',    'age' => '4 days ago'],
-            ['id' => 'ORD-4702', 'item' => 'MacBook Pro M2 14"',          'amount' => 165000, 'status' => 'Processing', 'status_color' => 'amber',   'age' => '6 days ago'],
-            ['id' => 'ORD-4688', 'item' => 'AirPods Pro 2nd Gen',         'amount' => 18500,  'status' => 'Delivered',  'status_color' => 'emerald', 'age' => '1 week ago'],
-            ['id' => 'ORD-4601', 'item' => 'iPad Air 5th Gen',            'amount' => 58000,  'status' => 'Delivered',  'status_color' => 'emerald', 'age' => '2 weeks ago'],
-        ]);
+        $recentOrders = $hasOrders
+            ? rescue(fn() => \App\Models\Order::where('user_id', $user->id)->with(['status', 'items.product'])->latest()->take(5)->get(), new Collection(), false)
+            : new Collection();
 
         return view('pages.buyer.dashboard', compact('user', 'stats', 'chartData', 'recentOrders'));
     }

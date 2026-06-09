@@ -4,38 +4,43 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
 class ContentManagerDashboardController extends Controller
 {
     public function index(Request $request): View
     {
+        $hasProds = Schema::hasTable('products');
+        $hasCats  = Schema::hasTable('product_categories');
+
+        $totalProducts  = $hasProds ? rescue(fn() => \App\Models\Product::count(), 0, false) : 0;
+        $pendingReview  = $hasProds ? rescue(fn() => \App\Models\Product::whereIn('verification_status', ['pending', 'in_review'])->count(), 0, false) : 0;
+        $publishedToday = $hasProds ? rescue(fn() => \App\Models\Product::where('verification_status', 'verified')->whereDate('cert_issued_at', today())->count(), 0, false) : 0;
+        $categories     = $hasCats  ? rescue(fn() => \App\Models\ProductCategory::count(), 0, false) : 0;
+
         $stats = [
-            'total_products'  => 486,
-            'pending_review'  => 22,
-            'published_today' => 14,
-            'categories'      => 18,
+            'total_products'  => $totalProducts,
+            'pending_review'  => $pendingReview,
+            'published_today' => $publishedToday,
+            'categories'      => $categories,
         ];
 
-        // 7-day publications for sparkline
-        $chartData = [8, 12, 10, 15, 11, 14, 14];
+        $chartData = $hasProds
+            ? array_map(fn($i) => rescue(fn() => \App\Models\Product::where('verification_status', 'verified')->whereDate('cert_issued_at', now()->subDays($i))->count(), 0, false), range(6, 0))
+            : array_fill(0, 7, 0);
 
-        // Publication funnel
         $funnel = [
-            'submitted' => 22,
-            'in_review' => 7,
-            'approved'  => 486,
-            'rejected'  => 34,
+            'submitted' => $hasProds ? rescue(fn() => \App\Models\Product::whereIn('verification_status', ['pending', 'in_review'])->count(), 0, false) : 0,
+            'in_review' => $hasProds ? rescue(fn() => \App\Models\Product::where('verification_status', 'in_review')->count(), 0, false) : 0,
+            'approved'  => $hasProds ? rescue(fn() => \App\Models\Product::where('verification_status', 'verified')->count(), 0, false) : 0,
+            'rejected'  => $hasProds ? rescue(fn() => \App\Models\Product::where('verification_status', 'rejected')->count(), 0, false) : 0,
         ];
 
-        $recentProducts = collect([
-            ['name' => 'iPhone 14 Pro Max 256GB – Deep Purple',  'vendor' => 'TechHub KE',    'status' => 'pending',   'category' => 'Phone',  'age' => '5 min ago'],
-            ['name' => 'Samsung Galaxy S23 FE – Graphite',       'vendor' => 'Gadget World',  'status' => 'pending',   'category' => 'Phone',  'age' => '22 min ago'],
-            ['name' => 'Dell XPS 15 2024 – Platinum Silver',     'vendor' => 'iStore Nairobi','status' => 'in_review', 'category' => 'Laptop', 'age' => '1 hr ago'],
-            ['name' => 'Apple Watch Series 9 – Midnight',        'vendor' => 'TechHub KE',    'status' => 'verified',  'category' => 'Watch',  'age' => '2 hrs ago'],
-            ['name' => 'Sony WH-1000XM5 Headphones – Black',    'vendor' => 'AudioZone KE',  'status' => 'pending',   'category' => 'Audio',  'age' => '3 hrs ago'],
-            ['name' => 'Google Pixel 8 Pro – Hazel',             'vendor' => 'Gadget World',  'status' => 'verified',  'category' => 'Phone',  'age' => '5 hrs ago'],
-        ]);
+        $recentProducts = $hasProds
+            ? rescue(fn() => \App\Models\Product::with(['vendor', 'category'])->latest()->take(6)->get(), new Collection(), false)
+            : new Collection();
 
         return view('pages.admin.content.dashboard', compact(
             'stats', 'chartData', 'funnel', 'recentProducts'
