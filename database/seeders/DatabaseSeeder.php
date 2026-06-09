@@ -35,6 +35,8 @@ class DatabaseSeeder extends Seeder
             OrderRefundStatusSeeder::class,
             OrderShipmentStatusSeeder::class,
             EmailCampaignStatusSeeder::class,
+
+            NotificationSeeder::class,
         ]);
     }
 }

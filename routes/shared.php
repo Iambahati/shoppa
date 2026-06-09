@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Shared\NotificationController;
 use App\Http\Controllers\Shared\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,5 +20,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])
         ->name('shared.profile.password');
+
+    // Notifications
+    Route::get('/notifications/{id}/open', [NotificationController::class, 'open'])
+        ->name('notifications.open');
+
+    Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])
+        ->name('notifications.readAll');
 
 });
