@@ -5,10 +5,10 @@
 
     {{-- ── GREETING ─────────────────────────────────────────────────────── --}}
     <div class="mb-8">
-        <h2 class="bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent text-2xl font-bold">
+        <p class="section-label mb-1.5">{{ now()->format('l, d F Y') }}</p>
+        <h1 class="text-xl font-semibold text-white tracking-tight">
             Good {{ now()->hour < 12 ? 'morning' : (now()->hour < 17 ? 'afternoon' : 'evening') }}, {{ $firstName }}
-        </h2>
-        <p class="mt-1 text-sm text-slate-400">{{ now()->format('l, d F Y') }}</p>
+        </h1>
     </div>
 
     {{-- ── KPI TILES ────────────────────────────────────────────────────── --}}
@@ -45,38 +45,20 @@
         />
     </div>
 
-    {{-- ── BROWSE CTA ───────────────────────────────────────────────────── --}}
-    <div class="mb-8 overflow-hidden rounded-2xl bg-gradient-to-br from-sky-600/30 via-sky-500/10 to-transparent
-                ring-1 ring-sky-500/20 p-6 shadow-lg shadow-sky-500/10">
-        <div class="flex items-center justify-between gap-6">
-            <div>
-                <h3 class="text-lg font-bold text-white">Find your next device</h3>
-                <p class="mt-1 text-sm text-sky-200/70">Every device is physically inspected and certified before listing</p>
-            </div>
-            <a href="{{ route('buyer.browse') }}"
-               class="inline-flex shrink-0 items-center gap-2 rounded-lg bg-sky-500 px-5 py-2.5 text-sm font-semibold
-                      text-white shadow-lg shadow-sky-500/30 transition-all hover:bg-sky-400 hover:shadow-sky-400/40">
-                Browse now <x-nav-icon name="chevron-r" class="h-4 w-4" />
+    {{-- ── NOTICE STRIPS ────────────────────────────────────────────────── --}}
+    <div class="mb-6 space-y-2">
+        <div class="notice-strip border-sky-400/40">
+            <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-sky-400"></span>
+            <p class="text-slate-300">Every device on Shoppa is physically inspected before listing</p>
+            <a href="{{ route('buyer.browse') }}" class="ml-auto shrink-0 text-xs font-medium text-sky-400 transition-colors hover:text-sky-300">
+                Browse now →
             </a>
         </div>
     </div>
 
-    {{-- ── TRUST CALLOUT ────────────────────────────────────────────────── --}}
-    <div class="mb-8 flex items-start gap-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-6
-                shadow-lg shadow-emerald-500/10">
-        <x-trust-verified-pill size="lg" class="mt-0.5 shrink-0" />
-        <div>
-            <p class="text-sm font-semibold text-emerald-300">Every device on Shoppa is physically inspected</p>
-            <p class="mt-1 text-sm leading-relaxed text-emerald-400">
-                Our verification team checks IMEI legitimacy, hardware authenticity, and condition grading before any listing goes live.
-                <a href="{{ route('buyer.browse') }}" class="font-medium underline underline-offset-2 hover:no-underline">Browse verified devices →</a>
-            </p>
-        </div>
-    </div>
-
     {{-- ── RECENT ORDERS ────────────────────────────────────────────────── --}}
-    <div class="overflow-hidden rounded-2xl bg-slate-800 ring-1 ring-white/5">
-        <div class="flex items-center justify-between border-b border-white/5 px-6 py-4">
+    <div class="overflow-hidden rounded-xl bg-slate-800/60 ring-1 ring-white/[0.06]">
+        <div class="flex items-center justify-between border-b border-white/[0.05] px-6 py-4">
             <h3 class="text-sm font-semibold text-white">Recent orders</h3>
             <a href="{{ route('buyer.orders.index') }}" class="text-xs font-medium text-sky-400 transition-colors hover:text-sky-300">View all</a>
         </div>
@@ -101,7 +83,7 @@
                 </a>
             </div>
         @else
-            <ul role="list" class="divide-y divide-white/5">
+            <ul role="list" class="divide-y divide-white/[0.04]">
                 @foreach($recentOrders as $order)
                     @php
                         $statusName  = $order->status?->name ?? 'pending';

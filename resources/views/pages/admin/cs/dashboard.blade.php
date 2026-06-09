@@ -6,10 +6,11 @@
     {{-- ── HEADER ─────────────────────────────────────────────────────── --}}
     <div class="mb-8 flex items-start justify-between gap-4">
         <div>
-            <h2 class="bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent text-2xl font-bold">
+            <p class="section-label mb-1.5">{{ now()->format('l, d F Y') }}</p>
+            <h1 class="text-xl font-semibold text-white tracking-tight">
                 Good {{ now()->hour < 12 ? 'morning' : (now()->hour < 17 ? 'afternoon' : 'evening') }}, {{ $firstName }}
-            </h2>
-            <p class="mt-1 text-sm text-slate-400">{{ now()->format('l, d F Y') }} &mdash; Customer Service overview</p>
+            </h1>
+            <p class="mt-0.5 text-[13px] text-slate-500">Customer Service overview</p>
         </div>
         <a href="{{ route('admin.disputes.index') }}"
             class="inline-flex shrink-0 items-center gap-2 rounded-lg bg-sky-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-sky-400 hover:shadow-lg hover:shadow-sky-500/20">
@@ -52,28 +53,30 @@
         />
     </div>
 
-    {{-- ── URGENCY BREAKDOWN TILES ─────────────────────────────────────── --}}
-    <div class="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div class="rounded-2xl bg-red-500/10 ring-1 ring-red-500/20 px-5 py-5 text-center">
-            <p class="text-4xl font-bold tabular-nums text-red-400">{{ $urgencyBreakdown['high'] }}</p>
-            <p class="mt-1.5 text-xs font-semibold text-slate-300">High priority</p>
-            <p class="mt-0.5 text-xs text-red-400/70">Action required within 24h</p>
-        </div>
-        <div class="rounded-2xl bg-amber-500/10 ring-1 ring-amber-500/20 px-5 py-5 text-center">
-            <p class="text-4xl font-bold tabular-nums text-amber-400">{{ $urgencyBreakdown['medium'] }}</p>
-            <p class="mt-1.5 text-xs font-semibold text-slate-300">Medium priority</p>
-            <p class="mt-0.5 text-xs text-amber-400/70">Resolve within 3 days</p>
-        </div>
-        <div class="rounded-2xl bg-white/5 ring-1 ring-white/5 px-5 py-5 text-center">
-            <p class="text-4xl font-bold tabular-nums text-slate-400">{{ $urgencyBreakdown['low'] }}</p>
-            <p class="mt-1.5 text-xs font-semibold text-slate-300">Low priority</p>
-            <p class="mt-0.5 text-xs text-slate-500">No immediate urgency</p>
+    {{-- ── URGENCY BREAKDOWN ────────────────────────────────────────────── --}}
+    <div class="mb-8 overflow-hidden rounded-xl bg-slate-800/60 ring-1 ring-white/[0.06]">
+        <div class="grid grid-cols-3 divide-x divide-white/[0.05]">
+            <div class="px-5 py-4 text-center">
+                <p class="text-3xl font-bold tabular-nums text-red-400 leading-none">{{ $urgencyBreakdown['high'] }}</p>
+                <p class="mt-1.5 section-label">High priority</p>
+                <p class="mt-0.5 text-[11px] text-slate-600">Within 24h</p>
+            </div>
+            <div class="px-5 py-4 text-center">
+                <p class="text-3xl font-bold tabular-nums text-amber-400 leading-none">{{ $urgencyBreakdown['medium'] }}</p>
+                <p class="mt-1.5 section-label">Medium</p>
+                <p class="mt-0.5 text-[11px] text-slate-600">Within 3 days</p>
+            </div>
+            <div class="px-5 py-4 text-center">
+                <p class="text-3xl font-bold tabular-nums text-slate-500 leading-none">{{ $urgencyBreakdown['low'] }}</p>
+                <p class="mt-1.5 section-label">Low priority</p>
+                <p class="mt-0.5 text-[11px] text-slate-600">No urgency</p>
+            </div>
         </div>
     </div>
 
     {{-- ── OPEN DISPUTES LIST ───────────────────────────────────────────── --}}
-    <div class="overflow-hidden rounded-2xl bg-slate-800 ring-1 ring-white/5">
-        <div class="flex items-center justify-between border-b border-white/5 px-6 py-4">
+    <div class="overflow-hidden rounded-xl bg-slate-800/60 ring-1 ring-white/[0.06]">
+        <div class="flex items-center justify-between border-b border-white/[0.05] px-6 py-4">
             <h3 class="text-sm font-semibold text-white">Open disputes</h3>
             <a href="{{ route('admin.disputes.index') }}" class="text-xs font-medium text-sky-400 transition-colors hover:text-sky-300">View all</a>
         </div>
@@ -91,7 +94,7 @@
                 <p class="mt-1 text-xs text-slate-500">The platform is running smoothly — keep up the great work.</p>
             </div>
         @else
-            <ul role="list" class="divide-y divide-white/5">
+            <ul role="list" class="divide-y divide-white/[0.04]">
                 @foreach($disputesWithPriority as $item)
                     @php
                         $dispute = $item['model'];

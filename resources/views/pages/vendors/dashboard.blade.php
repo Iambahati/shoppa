@@ -4,10 +4,11 @@
     {{-- ── HEADER ─────────────────────────────────────────────────────── --}}
     <div class="mb-8 flex items-start justify-between gap-4">
         <div>
-            <h2 class="bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent text-2xl font-bold">
+            <p class="section-label mb-1.5">{{ now()->format('l, d F Y') }}</p>
+            <h1 class="text-xl font-semibold text-white tracking-tight">
                 {{ $vendor?->name ?? auth()->user()->name }}
-            </h2>
-            <p class="mt-1 text-sm text-slate-400">Seller overview &mdash; {{ now()->format('d F Y') }}</p>
+            </h1>
+            <p class="mt-0.5 text-[13px] text-slate-500">Seller overview</p>
         </div>
         <a href="{{ route('vendor.listings.create') }}"
             class="inline-flex shrink-0 items-center gap-2 rounded-lg bg-sky-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-sky-400 hover:shadow-lg hover:shadow-sky-500/20">
@@ -50,24 +51,22 @@
         />
     </div>
 
-    {{-- ── VERIFICATION UPSELL ──────────────────────────────────────────── --}}
-    <div class="mb-8 flex items-start gap-4 rounded-2xl border border-amber-500/20 bg-amber-500/10 p-6">
-        <span class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/15 text-amber-400">
-            <x-nav-icon name="shield" class="h-5 w-5" />
-        </span>
-        <div>
-            <p class="text-sm font-semibold text-amber-300">Verification boosts your sales</p>
-            <p class="mt-1 text-sm leading-relaxed text-amber-400">
-                Devices with a Shoppa Trust Certificate sell faster and command better prices.
-                Send your stock to our verification centre — we charge
-                KSh {{ number_format(config('shoppa.verification.fee_min_ksh')) }}–{{ number_format(config('shoppa.verification.fee_max_ksh')) }} per device.
+    {{-- ── VERIFICATION NOTICE ──────────────────────────────────────────── --}}
+    <div class="mb-8">
+        <div class="notice-strip border-amber-400/40">
+            <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400"></span>
+            <p class="text-slate-300">
+                Trust Certificates boost sales — KSh {{ number_format(config('shoppa.verification.fee_min_ksh')) }}–{{ number_format(config('shoppa.verification.fee_max_ksh')) }} per device
             </p>
+            <a href="{{ route('vendor.listings.create') }}" class="ml-auto shrink-0 text-xs font-medium text-amber-400 transition-colors hover:text-amber-300">
+                Submit for inspection →
+            </a>
         </div>
     </div>
 
     {{-- ── REVENUE TREND: 7-day bar chart ─────────────────────────────── --}}
-    <div class="mb-8 overflow-hidden rounded-2xl bg-slate-800 ring-1 ring-white/5">
-        <div class="flex items-center justify-between border-b border-white/5 px-6 py-4">
+    <div class="mb-8 overflow-hidden rounded-xl bg-slate-800/60 ring-1 ring-white/[0.06]">
+        <div class="flex items-center justify-between border-b border-white/[0.05] px-6 py-4">
             <div>
                 <h3 class="text-sm font-semibold text-white">Revenue trend</h3>
                 <p class="mt-0.5 text-xs text-slate-400">Last 7 days (KSh)</p>
@@ -108,7 +107,7 @@
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
 
         {{-- Inventory breakdown --}}
-        <div class="rounded-2xl bg-slate-800 ring-1 ring-white/5 px-6 py-5">
+        <div class="rounded-xl bg-slate-800/60 ring-1 ring-white/[0.06] px-6 py-5">
             <h3 class="mb-5 text-sm font-semibold text-white">Inventory breakdown</h3>
             @php $breakdownTotal = array_sum($listingBreakdown); @endphp
             @if($breakdownTotal > 0)
@@ -118,7 +117,7 @@
                             <span class="font-medium text-emerald-400">Live &amp; verified</span>
                             <span class="tabular-nums text-slate-300">{{ $listingBreakdown['active'] }}</span>
                         </div>
-                        <div class="h-2 rounded-full bg-white/10">
+                        <div class="h-[3px] rounded-full bg-white/[0.06]">
                             <div class="h-full rounded-full bg-gradient-to-r from-sky-500 to-emerald-500 transition-all duration-700"
                                  style="width: {{ round(($listingBreakdown['active'] / $breakdownTotal) * 100) }}%"></div>
                         </div>
@@ -128,7 +127,7 @@
                             <span class="font-medium text-amber-400">Pending verification</span>
                             <span class="tabular-nums text-slate-300">{{ $listingBreakdown['pending'] }}</span>
                         </div>
-                        <div class="h-2 rounded-full bg-white/10">
+                        <div class="h-[3px] rounded-full bg-white/[0.06]">
                             <div class="h-full rounded-full bg-amber-400 transition-all duration-700"
                                  style="width: {{ round(($listingBreakdown['pending'] / $breakdownTotal) * 100) }}%"></div>
                         </div>
@@ -138,7 +137,7 @@
                             <span class="font-medium text-red-400">Rejected</span>
                             <span class="tabular-nums text-slate-300">{{ $listingBreakdown['rejected'] }}</span>
                         </div>
-                        <div class="h-2 rounded-full bg-white/10">
+                        <div class="h-[3px] rounded-full bg-white/[0.06]">
                             <div class="h-full rounded-full bg-red-400/70 transition-all duration-700"
                                  style="width: {{ round(($listingBreakdown['rejected'] / $breakdownTotal) * 100) }}%"></div>
                         </div>
@@ -161,8 +160,8 @@
         </div>
 
         {{-- Recent listings --}}
-        <div class="overflow-hidden rounded-2xl bg-slate-800 ring-1 ring-white/5 lg:col-span-2">
-            <div class="flex items-center justify-between border-b border-white/5 px-6 py-4">
+        <div class="overflow-hidden rounded-xl bg-slate-800/60 ring-1 ring-white/[0.06] lg:col-span-2">
+            <div class="flex items-center justify-between border-b border-white/[0.05] px-6 py-4">
                 <h3 class="text-sm font-semibold text-white">Recent listings</h3>
                 <a href="{{ route('vendor.listings.index') }}" class="text-xs font-medium text-sky-400 transition-colors hover:text-sky-300">Manage all</a>
             </div>
@@ -187,7 +186,7 @@
                     </a>
                 </div>
             @else
-                <ul role="list" class="divide-y divide-white/5">
+                <ul role="list" class="divide-y divide-white/[0.04]">
                     @foreach($recentListings as $listing)
                         <li class="flex items-center gap-4 px-6 py-3.5 transition-colors hover:bg-white/[0.03]">
                             <div class="min-w-0 flex-1">

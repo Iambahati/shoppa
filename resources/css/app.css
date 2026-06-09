@@ -1,51 +1,54 @@
-@import url('https://fonts.bunny.net/css?family=nunito:400,500,600,700&display=swap');
+@import url('https://fonts.bunny.net/css?family=nunito:400,500,600,700,800&display=swap');
 @import "tailwindcss";
 
 @plugin "@tailwindcss/forms";
 
-/* Alpine.js cloak — hide elements until Alpine initialises */
+/* Alpine.js cloak */
 [x-cloak] { display: none !important; }
 
 @theme {
-    --font-family-sans: 'Nunito', 'Nunito Variable', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-family-sans: 'Nunito', 'Nunito Variable', ui-sans-serif, system-ui, sans-serif;
     --font-family-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
 }
 
-/* Dashboard stat card entrance animations */
+/* ── Stat card entrance animations ─────────────────────────────────── */
 @keyframes fade-up-in {
-    from { opacity: 0; transform: translateY(8px); }
+    from { opacity: 0; transform: translateY(6px); }
     to   { opacity: 1; transform: translateY(0); }
 }
 
 @media (prefers-reduced-motion: no-preference) {
     .stat-card-animate {
         opacity: 0;
-        animation: fade-up-in 0.5s ease-out forwards;
+        animation: fade-up-in 0.4s ease-out forwards;
     }
 }
 
+/* ── Subtle page texture ─────────────────────────────────────────────
+   Adds depth without competing with content. Barely perceptible at
+   full opacity — this is intentional. */
+@layer utilities {
+    .bg-dot-grid {
+        background-image: radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px);
+        background-size: 28px 28px;
+    }
+}
+
+/* ── Base overrides ─────────────────────────────────────────────────── */
 @layer base {
-    [type='text'],
-    [type='email'],
-    [type='password'],
-    [type='tel'],
-    [type='number'],
-    [type='search'],
-    textarea,
-    select {
+    [type='text'], [type='email'], [type='password'],
+    [type='tel'], [type='number'], [type='search'],
+    textarea, select {
         @apply text-stone-900;
     }
 
-    html {
-        scroll-behavior: smooth;
-    }
-
-    * {
-        -webkit-tap-highlight-color: transparent;
-    }
+    html { scroll-behavior: smooth; }
+    * { -webkit-tap-highlight-color: transparent; }
 }
 
+/* ── Component utilities ─────────────────────────────────────────────── */
 @layer components {
+    /* Used on buyer-facing (light bg) pages */
     .page-heading {
         @apply text-xl font-semibold text-stone-900 tracking-tight;
     }
@@ -58,6 +61,7 @@
         @apply px-5 py-3 text-sm text-stone-700;
     }
 
+    /* Light-mode card (buyer pages) */
     .card {
         @apply rounded-xl bg-white shadow-sm ring-1 ring-stone-950/5;
     }
@@ -66,5 +70,15 @@
         @apply block w-full rounded-lg border-0 py-2 px-3 text-stone-900 ring-1 ring-inset
                ring-stone-300 placeholder:text-stone-400 text-sm
                focus:ring-2 focus:ring-inset focus:ring-sky-500;
+    }
+
+    /* ── Section label — used in dashboards ─────────────────────────── */
+    .section-label {
+        @apply text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 select-none;
+    }
+
+    /* ── Inline notice strip (replaces heavy alert banners) ─────────── */
+    .notice-strip {
+        @apply flex items-center gap-3 rounded-lg border-l-2 bg-white/[0.025] px-4 py-2.5 text-sm text-slate-300;
     }
 }

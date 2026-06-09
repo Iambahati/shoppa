@@ -6,10 +6,11 @@
     {{-- ── HEADER ─────────────────────────────────────────────────────── --}}
     <div class="mb-8 flex items-start justify-between gap-4">
         <div>
-            <h2 class="bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent text-2xl font-bold">
+            <p class="section-label mb-1.5">{{ now()->format('l, d F Y') }}</p>
+            <h1 class="text-xl font-semibold text-white tracking-tight">
                 Good {{ now()->hour < 12 ? 'morning' : (now()->hour < 17 ? 'afternoon' : 'evening') }}, {{ $firstName }}
-            </h2>
-            <p class="mt-1 text-sm text-slate-400">{{ now()->format('l, d F Y') }} &mdash; Content Manager overview</p>
+            </h1>
+            <p class="mt-0.5 text-[13px] text-slate-500">Content Manager overview</p>
         </div>
         <a href="{{ route('admin.products.create') }}"
             class="inline-flex shrink-0 items-center gap-2 rounded-lg bg-sky-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-sky-400 hover:shadow-lg hover:shadow-sky-500/20">
@@ -53,7 +54,7 @@
     </div>
 
     {{-- ── PUBLICATION FUNNEL ───────────────────────────────────────────── --}}
-    <div class="mb-8 rounded-2xl bg-slate-800 ring-1 ring-white/5 px-6 py-5">
+    <div class="mb-8 rounded-xl bg-slate-800/60 ring-1 ring-white/[0.06] px-6 py-5">
         <h3 class="mb-5 text-sm font-semibold text-white">Publication funnel</h3>
         @php
             $funnelStages = [
@@ -71,7 +72,7 @@
                         <span class="{{ $stage['text'] }} font-medium">{!! $stage['label'] !!}</span>
                         <span class="tabular-nums text-slate-300">{{ number_format($stage['count']) }}</span>
                     </div>
-                    <div class="h-2 rounded-full bg-white/10">
+                    <div class="h-[3px] rounded-full bg-white/[0.06]">
                         <div class="h-full rounded-full {{ $stage['color'] }} transition-all duration-700"
                              style="width: {{ round(($stage['count'] / $funnelMax) * 100) }}%"></div>
                     </div>
@@ -81,8 +82,8 @@
     </div>
 
     {{-- ── RECENTLY SUBMITTED PRODUCTS ─────────────────────────────────── --}}
-    <div class="overflow-hidden rounded-2xl bg-slate-800 ring-1 ring-white/5">
-        <div class="flex items-center justify-between border-b border-white/5 px-6 py-4">
+    <div class="overflow-hidden rounded-xl bg-slate-800/60 ring-1 ring-white/[0.06]">
+        <div class="flex items-center justify-between border-b border-white/[0.05] px-6 py-4">
             <h3 class="text-sm font-semibold text-white">Recently submitted products</h3>
             <a href="{{ route('admin.products.index') }}" class="text-xs font-medium text-sky-400 transition-colors hover:text-sky-300">View all</a>
         </div>
@@ -102,7 +103,7 @@
                 <p class="mt-1 text-xs text-slate-500">Products will appear here as vendors submit them for review.</p>
             </div>
         @else
-            <ul role="list" class="divide-y divide-white/5">
+            <ul role="list" class="divide-y divide-white/[0.04]">
                 @foreach($recentProducts as $product)
                     <li class="flex items-center gap-4 px-6 py-3.5 transition-colors hover:bg-white/[0.03]">
                         <div class="min-w-0 flex-1">

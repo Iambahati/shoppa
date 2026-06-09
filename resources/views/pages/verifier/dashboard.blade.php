@@ -6,10 +6,11 @@
     {{-- ── HEADER ─────────────────────────────────────────────────────── --}}
     <div class="mb-8 flex items-start justify-between gap-4">
         <div>
-            <h2 class="bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent text-2xl font-bold">
+            <p class="section-label mb-1.5">{{ now()->format('l, d F Y') }}</p>
+            <h1 class="text-xl font-semibold text-white tracking-tight">
                 Good {{ now()->hour < 12 ? 'morning' : (now()->hour < 17 ? 'afternoon' : 'evening') }}, {{ $firstName }}
-            </h2>
-            <p class="mt-1 text-sm text-slate-400">{{ now()->format('l, d F Y') }} &mdash; Inspection lab overview</p>
+            </h1>
+            <p class="mt-0.5 text-[13px] text-slate-500">Inspection lab overview</p>
         </div>
         <a href="{{ route('verifier.queue') }}"
             class="inline-flex shrink-0 items-center gap-2 rounded-lg bg-sky-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-sky-400 hover:shadow-lg hover:shadow-sky-500/20">
@@ -52,17 +53,14 @@
         />
     </div>
 
-    {{-- ── TRUST ENGINE CALLOUT ─────────────────────────────────────────── --}}
-    <div class="mb-8 flex items-start gap-4 rounded-2xl border border-sky-500/20 bg-sky-500/10 p-6">
-        <span class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-500/15 text-sky-400">
-            <x-nav-icon name="shield" class="h-5 w-5" />
-        </span>
-        <div>
-            <p class="text-sm font-semibold text-sky-300">You are the Trust Engine</p>
-            <p class="mt-1 text-sm leading-relaxed text-sky-400">
-                Every certification you issue carries a QR-backed UUID. Buyers rely on your judgement to confirm IMEI legitimacy,
-                hardware authenticity, and condition grading. Only the Verifier role can issue Trust Certificates.
-            </p>
+    {{-- ── TRUST ENGINE NOTICE ──────────────────────────────────────────── --}}
+    <div class="mb-8">
+        <div class="notice-strip border-sky-400/40">
+            <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-sky-400"></span>
+            <p class="text-slate-300">Only the Verifier role can issue Trust Certificates — each carries a QR-backed UUID</p>
+            <a href="{{ route('verifier.queue') }}" class="ml-auto shrink-0 text-xs font-medium text-sky-400 transition-colors hover:text-sky-300">
+                Open queue →
+            </a>
         </div>
     </div>
 
@@ -78,8 +76,8 @@
         $completionPct  = $totalRing > 0 ? round(($done / $totalRing) * 100) : 0;
     @endphp
 
-    <div class="mb-8 overflow-hidden rounded-2xl bg-slate-800 ring-1 ring-white/5">
-        <div class="border-b border-white/5 px-6 py-4">
+    <div class="mb-8 overflow-hidden rounded-xl bg-slate-800/60 ring-1 ring-white/[0.06]">
+        <div class="border-b border-white/[0.05] px-6 py-4">
             <h3 class="text-sm font-semibold text-white">Today's certification progress</h3>
             <p class="mt-0.5 text-xs text-slate-400">{{ $done }} of {{ $totalRing }} devices processed</p>
         </div>
@@ -156,8 +154,8 @@
     </div>
 
     {{-- ── QUEUE TABLE ──────────────────────────────────────────────────── --}}
-    <div class="overflow-hidden rounded-2xl bg-slate-800 ring-1 ring-white/5">
-        <div class="flex items-center justify-between border-b border-white/5 px-6 py-4">
+    <div class="overflow-hidden rounded-xl bg-slate-800/60 ring-1 ring-white/[0.06]">
+        <div class="flex items-center justify-between border-b border-white/[0.05] px-6 py-4">
             <h3 class="text-sm font-semibold text-white">Oldest pending devices</h3>
             <a href="{{ route('verifier.queue') }}" class="text-xs font-medium text-sky-400 transition-colors hover:text-sky-300">Full queue ({{ $stats['queue_depth'] }})</a>
         </div>
@@ -174,7 +172,7 @@
                 <p class="mt-1 text-xs text-slate-500">All submitted devices have been processed.</p>
             </div>
         @else
-            <ul role="list" class="divide-y divide-white/5">
+            <ul role="list" class="divide-y divide-white/[0.04]">
                 @foreach($topQueue as $item)
                     @php
                         $device = $item['model'];

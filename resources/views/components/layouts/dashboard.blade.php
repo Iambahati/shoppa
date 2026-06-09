@@ -21,7 +21,7 @@
 
         @include('partials.flash-message')
 
-        <main class="flex-1 py-8">
+        <main class="flex-1 py-8 bg-dot-grid">
             <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
                 {{ $slot }}
             </div>
