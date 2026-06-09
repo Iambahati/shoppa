@@ -3,19 +3,19 @@
 
     <div class="mx-auto max-w-2xl">
         <div class="mb-6 flex items-center gap-3">
-            <a href="{{ route('vendor.listings.index') }}" class="text-sm text-stone-400 hover:text-stone-600 flex items-center gap-1">
+            <a href="{{ route('vendor.listings.index') }}" class="text-sm text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1">
                 <x-nav-icon name="chevron-r" class="h-4 w-4 rotate-180" /> Back to listings
             </a>
         </div>
 
         <div class="mb-6">
-            <h2 class="text-xl font-semibold text-stone-900">Add a device</h2>
-            <p class="mt-1 text-sm text-stone-500">
+            <h2 class="text-xl font-semibold text-white">Add a device</h2>
+            <p class="mt-1 text-sm text-slate-400">
                 New listings are saved as drafts and hidden from buyers until a Shoppa verifier certifies the device.
             </p>
         </div>
 
-        <div class="rounded-xl bg-white ring-1 ring-stone-950/5 shadow-sm p-6">
+        <div class="rounded-2xl bg-white ring-1 ring-slate-950/5 shadow-sm p-6">
             <form method="POST" action="{{ route('vendor.listings.store') }}" class="space-y-5">
                 @csrf
 
@@ -34,11 +34,11 @@
                 </div>
 
                 <div class="space-y-1">
-                    <label for="product_category_id" class="block text-sm font-medium text-stone-700">
+                    <label for="product_category_id" class="block text-sm font-medium text-slate-700">
                         Category <span class="text-red-500" aria-hidden="true">*</span>
                     </label>
                     <select id="product_category_id" name="product_category_id" required
-                        class="block w-full rounded-lg border-0 py-2 px-3 text-stone-900 ring-1 ring-inset ring-stone-300 text-sm focus:ring-2 focus:ring-inset focus:ring-emerald-600">
+                        class="block w-full rounded-lg border-0 py-2 px-3 text-slate-900 ring-1 ring-inset ring-slate-300 text-sm focus:ring-2 focus:ring-inset focus:ring-sky-500">
                         <option value="" disabled selected>Select a category</option>
                         @foreach($categories as $cat)
                         <option value="{{ $cat->id }}" @selected(old('product_category_id')==$cat->id)>{{ $cat->name }}</option>
@@ -52,18 +52,18 @@
 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-1">
-                        <label for="device_type" class="block text-sm font-medium text-stone-700">Device type <span class="text-red-500">*</span></label>
+                        <label for="device_type" class="block text-sm font-medium text-slate-700">Device type <span class="text-red-500">*</span></label>
                         <select id="device_type" name="device_type" required
-                            class="block w-full rounded-lg border-0 py-2 px-3 text-stone-900 ring-1 ring-inset ring-stone-300 text-sm focus:ring-2 focus:ring-inset focus:ring-emerald-600">
+                            class="block w-full rounded-lg border-0 py-2 px-3 text-slate-900 ring-1 ring-inset ring-slate-300 text-sm focus:ring-2 focus:ring-inset focus:ring-sky-500">
                             @foreach(['phone' => 'Phone', 'laptop' => 'Laptop', 'tablet' => 'Tablet', 'other' => 'Other'] as $val => $label)
                             <option value="{{ $val }}" @selected(old('device_type')===$val)>{{ $label }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="space-y-1">
-                        <label for="condition_grade" class="block text-sm font-medium text-stone-700">Condition <span class="text-red-500">*</span></label>
+                        <label for="condition_grade" class="block text-sm font-medium text-slate-700">Condition <span class="text-red-500">*</span></label>
                         <select id="condition_grade" name="condition_grade" required
-                            class="block w-full rounded-lg border-0 py-2 px-3 text-stone-900 ring-1 ring-inset ring-stone-300 text-sm focus:ring-2 focus:ring-inset focus:ring-emerald-600">
+                            class="block w-full rounded-lg border-0 py-2 px-3 text-slate-900 ring-1 ring-inset ring-slate-300 text-sm focus:ring-2 focus:ring-inset focus:ring-sky-500">
                             @foreach(['new' => 'Brand new', 'like_new' => 'Like new', 'good' => 'Good', 'fair' => 'Fair'] as $val => $label)
                             <option value="{{ $val }}" @selected(old('condition_grade')===$val)>{{ $label }}</option>
                             @endforeach
@@ -79,9 +79,9 @@
                     placeholder="C02X1234ABCD"
                     hint="Found in Settings → About on most devices." />
 
-                <div class="rounded-lg bg-amber-50 border border-amber-200 px-4 py-3 flex items-start gap-3">
-                    <x-nav-icon name="shield" class="h-4 w-4 shrink-0 mt-0.5 text-amber-600" />
-                    <p class="text-xs text-amber-700 leading-relaxed">
+                <div class="rounded-lg border border-amber-500/20 bg-amber-500/10 px-4 py-3 flex items-start gap-3">
+                    <x-nav-icon name="shield" class="h-4 w-4 shrink-0 mt-0.5 text-amber-400" />
+                    <p class="text-xs text-amber-400 leading-relaxed">
                         After saving, your device will be queued for physical verification at our centre.
                         Verification fee: KSh {{ number_format(config('shoppa.verification.fee_min_ksh')) }}–{{ number_format(config('shoppa.verification.fee_max_ksh')) }}.
                         The listing goes live only after a Trust Certificate is issued.
@@ -89,7 +89,7 @@
                 </div>
 
                 <div class="pt-2 flex items-center justify-between gap-4">
-                    <a href="{{ route('vendor.listings.index') }}" class="text-sm text-stone-500 hover:text-stone-700">Cancel</a>
+                    <a href="{{ route('vendor.listings.index') }}" class="text-sm text-slate-400 hover:text-slate-200 transition-colors">Cancel</a>
                     <x-ui-button type="submit">Save listing</x-ui-button>
                 </div>
             </form>

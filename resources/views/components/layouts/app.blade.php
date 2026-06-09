@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-stone-50">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-slate-900">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,10 +7,10 @@
     <title>{{ isset($title) ? $title . ' — ' : '' }}{{ config('shoppa.name') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="h-full" x-data="{ sidebarOpen: false }">
+<body class="h-full bg-slate-900" x-data="{ sidebarOpen: false }">
 
     <div x-show="sidebarOpen" x-transition.opacity @click="sidebarOpen = false"
-        class="fixed inset-0 z-40 bg-stone-950/40 lg:hidden" aria-hidden="true"></div>
+        class="fixed inset-0 z-40 bg-slate-900/60 lg:hidden" aria-hidden="true"></div>
 
     <x-nav-sidebar />
 

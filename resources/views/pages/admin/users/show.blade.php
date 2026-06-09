@@ -2,7 +2,7 @@
     <x-slot:title>{{ $user->name }}</x-slot:title>
 
     <div class="mb-6">
-        <a href="{{ route('admin.users.index') }}" class="text-sm text-stone-400 hover:text-stone-600 transition-colors flex items-center gap-1 w-fit">
+        <a href="{{ route('admin.users.index') }}" class="text-sm text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1 w-fit">
             <x-nav-icon name="chevron-r" class="h-4 w-4 rotate-180" /> Back to users
         </a>
     </div>
@@ -12,17 +12,17 @@
         {{-- Left: identity --}}
         <div class="lg:col-span-2 space-y-5">
 
-            <div class="rounded-xl bg-white ring-1 ring-stone-950/5 shadow-sm p-6">
+            <div class="rounded-2xl bg-slate-800 ring-1 ring-white/5 p-6">
                 <div class="flex items-start justify-between gap-4">
                     <div class="flex items-center gap-4">
-                        <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xl font-semibold text-emerald-700 uppercase">
+                        <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-sky-600 text-xl font-semibold text-white uppercase">
                             {{ substr($user->name, 0, 2) }}
                         </div>
                         <div>
-                            <h2 class="text-lg font-semibold text-stone-900">{{ $user->name }}</h2>
-                            <p class="text-sm text-stone-500">{{ $user->email }}</p>
+                            <h2 class="text-lg font-semibold text-white">{{ $user->name }}</h2>
+                            <p class="text-sm text-slate-400">{{ $user->email }}</p>
                             @if($user->phone)
-                            <p class="text-sm text-stone-400">{{ $user->phone }}</p>
+                            <p class="text-sm text-slate-500">{{ $user->phone }}</p>
                             @endif
                         </div>
                     </div>
@@ -33,12 +33,12 @@
             </div>
 
             {{-- Activity log placeholder --}}
-            <div class="rounded-xl bg-white ring-1 ring-stone-950/5 shadow-sm overflow-hidden">
-                <div class="px-5 py-4 border-b border-stone-100">
-                    <h3 class="text-sm font-semibold text-stone-900">Recent activity</h3>
+            <div class="overflow-hidden rounded-2xl bg-slate-800 ring-1 ring-white/5">
+                <div class="px-5 py-4 border-b border-white/5">
+                    <h3 class="text-sm font-semibold text-white">Recent activity</h3>
                 </div>
                 <div class="px-5 py-10 text-center">
-                    <p class="text-sm text-stone-400">Activity log wired in Sprint 2.</p>
+                    <p class="text-sm text-slate-400">Activity log wired in Sprint 2.</p>
                 </div>
             </div>
 
@@ -47,21 +47,21 @@
         {{-- Right: meta --}}
         <div class="space-y-4">
 
-            <div class="rounded-xl bg-white ring-1 ring-stone-950/5 shadow-sm p-5">
-                <h4 class="text-sm font-semibold text-stone-900 mb-4">Account details</h4>
+            <div class="rounded-2xl bg-slate-800 ring-1 ring-white/5 p-5">
+                <h4 class="text-sm font-semibold text-white mb-4">Account details</h4>
                 <dl class="space-y-3">
                     <div>
-                        <dt class="text-xs text-stone-400 uppercase tracking-wide">Role</dt>
+                        <dt class="text-xs text-slate-400 uppercase tracking-wide">Role</dt>
                         @php
                         $roleColor = match($user->role?->name) {
-                        'Super Admin' => 'red',
-                        'Admin' => 'purple',
-                        'Verifier' => 'emerald',
-                        'Vendor Manager' => 'amber',
-                        'Customer Service' => 'blue',
-                        'Content Manager' => 'blue',
-                        'Vendor' => 'amber',
-                        default => 'stone',
+                            'Super Admin'      => 'red',
+                            'Admin'            => 'purple',
+                            'Verifier'         => 'emerald',
+                            'Vendor Manager'   => 'amber',
+                            'Customer Service' => 'blue',
+                            'Content Manager'  => 'blue',
+                            'Vendor'           => 'amber',
+                            default            => 'stone',
                         };
                         @endphp
                         <dd class="mt-1">
@@ -69,19 +69,19 @@
                         </dd>
                     </div>
                     <div>
-                        <dt class="text-xs text-stone-400 uppercase tracking-wide">Email verified</dt>
-                        <dd class="mt-1 text-sm {{ $user->email_verified_at ? 'text-emerald-600' : 'text-amber-600' }}">
+                        <dt class="text-xs text-slate-400 uppercase tracking-wide">Email verified</dt>
+                        <dd class="mt-1 text-sm {{ $user->email_verified_at ? 'text-emerald-400' : 'text-amber-400' }}">
                             {{ $user->email_verified_at ? $user->email_verified_at->format('d M Y') : 'Not verified' }}
                         </dd>
                     </div>
                     <div>
-                        <dt class="text-xs text-stone-400 uppercase tracking-wide">Member since</dt>
-                        <dd class="mt-1 text-sm text-stone-700">{{ $user->created_at->format('d M Y') }}</dd>
+                        <dt class="text-xs text-slate-400 uppercase tracking-wide">Member since</dt>
+                        <dd class="mt-1 text-sm text-slate-300">{{ $user->created_at->format('d M Y') }}</dd>
                     </div>
                     @if($user->deleted_at)
                     <div>
-                        <dt class="text-xs text-stone-400 uppercase tracking-wide">Deleted</dt>
-                        <dd class="mt-1 text-sm text-red-600">{{ $user->deleted_at->format('d M Y') }}</dd>
+                        <dt class="text-xs text-slate-400 uppercase tracking-wide">Deleted</dt>
+                        <dd class="mt-1 text-sm text-red-400">{{ $user->deleted_at->format('d M Y') }}</dd>
                     </div>
                     @endif
                 </dl>
