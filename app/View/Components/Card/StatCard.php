@@ -12,9 +12,11 @@ class StatCard extends Component
         public string  $label,
         public string  $value,
         public string  $icon        = 'package',
-        public ?string $trend       = null,   // e.g. '+12%'
-        public string  $trendDir    = 'up',   // up | down | neutral
+        public ?string $trend       = null,
+        public string  $trendDir    = 'up',
         public string  $iconColor   = 'emerald',
+        public ?string $sparkline   = null,   // comma-separated numbers, e.g. "12,19,14,27,22,31,34"
+        public bool    $glowFirst   = false,  // adds sky-500 glow shadow
     ) {}
 
     public function render(): View|Closure|string

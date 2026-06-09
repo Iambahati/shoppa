@@ -17,9 +17,31 @@
         'neutral' => '–',
         default   => '↑',
     };
+
+    // Sparkline SVG point computation
+    $sparkPoints = null;
+    if ($sparkline) {
+        $vals  = array_map('floatval', explode(',', $sparkline));
+        $min   = min($vals);
+        $max   = max($vals);
+        $range = max($max - $min, 1);
+        $count = count($vals) - 1;
+        $pts   = [];
+        foreach ($vals as $i => $v) {
+            $x = $count > 0 ? round(($i / $count) * 100, 2) : 0;
+            $y = round(24 - (($v - $min) / $range) * 22, 2); // 1px top padding
+            $pts[] = "$x,$y";
+        }
+        $sparkPoints = implode(' ', $pts);
+    }
+
+    $baseClass = 'stat-card-animate rounded-2xl bg-slate-800 px-6 py-5 ring-1 ring-white/5';
+    if ($glowFirst) {
+        $baseClass .= ' shadow-lg shadow-sky-500/20';
+    }
 @endphp
 
-<div {{ $attributes->merge(['class' => 'rounded-2xl bg-slate-800 px-6 py-5 ring-1 ring-white/5']) }}>
+<div {{ $attributes->merge(['class' => $baseClass]) }}>
     <div class="flex items-start justify-between gap-4">
         <div class="min-w-0 flex-1">
             <p class="text-xs font-medium uppercase tracking-wide text-slate-400">{{ $label }}</p>
@@ -34,4 +56,19 @@
             <x-nav-icon :name="$icon" class="h-5 w-5" />
         </span>
     </div>
+
+    @if($sparkPoints)
+        <svg class="mt-3 h-6 w-full overflow-visible" viewBox="0 0 100 24"
+             preserveAspectRatio="none" aria-hidden="true">
+            <polyline
+                points="{{ $sparkPoints }}"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="text-sky-400/70"
+            />
+        </svg>
+    @endif
 </div>
