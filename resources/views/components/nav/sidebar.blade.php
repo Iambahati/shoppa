@@ -7,13 +7,13 @@
     x-transition:leave="transition ease-in-out duration-200 transform"
     x-transition:leave-start="translate-x-0"
     x-transition:leave-end="-translate-x-full"
-    class="fixed inset-y-0 left-0 z-50 w-64 bg-slate-900 lg:hidden"
+    class="fixed inset-y-0 left-0 z-50 w-64 bg-slate-950 lg:hidden"
     aria-label="Mobile navigation"
 >
     @include('components.nav._sidebar-inner')
 </div>
 
 {{-- Desktop fixed --}}
-<div class="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-30 lg:flex lg:w-64 lg:flex-col bg-slate-900">
+<div class="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-30 lg:flex lg:w-64 lg:flex-col bg-slate-950">
     @include('components.nav._sidebar-inner')
 </div>
