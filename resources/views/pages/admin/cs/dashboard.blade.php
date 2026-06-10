@@ -7,13 +7,13 @@
     <div class="mb-8 flex items-start justify-between gap-4">
         <div>
             <p class="section-label mb-1.5">{{ now()->format('l, d F Y') }}</p>
-            <h1 class="text-xl font-semibold text-white tracking-tight">
+            <h1 class="text-xl font-semibold text-stone-900 tracking-tight">
                 Good {{ now()->hour < 12 ? 'morning' : (now()->hour < 17 ? 'afternoon' : 'evening') }}, {{ $firstName }}
             </h1>
-            <p class="mt-0.5 text-[13px] text-slate-500">Customer Service overview</p>
+            <p class="mt-0.5 text-[13px] text-stone-500">Customer Service overview</p>
         </div>
         <a href="{{ route('admin.disputes.index') }}"
-            class="inline-flex shrink-0 items-center gap-2 rounded-lg bg-sky-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-sky-400 hover:shadow-lg hover:shadow-sky-500/20">
+            class="inline-flex shrink-0 items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-emerald-500">
             <x-nav-icon name="flag" class="h-4 w-4" />
             Manage disputes
         </a>
@@ -54,71 +54,69 @@
     </div>
 
     {{-- ── URGENCY BREAKDOWN ────────────────────────────────────────────── --}}
-    <div class="mb-8 overflow-hidden rounded-xl bg-slate-800/60 ring-1 ring-white/[0.06]">
-        <div class="grid grid-cols-3 divide-x divide-white/[0.05]">
+    <div class="mb-8 card overflow-hidden">
+        <div class="grid grid-cols-3 divide-x divide-stone-100">
             <div class="px-5 py-4 text-center">
-                <p class="text-3xl font-bold tabular-nums text-red-400 leading-none">{{ $urgencyBreakdown['high'] }}</p>
+                <p class="text-3xl font-bold tabular-nums text-red-600 leading-none">{{ $urgencyBreakdown['high'] }}</p>
                 <p class="mt-1.5 section-label">High priority</p>
-                <p class="mt-0.5 text-[11px] text-slate-600">Within 24h</p>
+                <p class="mt-0.5 text-[11px] text-stone-400">Within 24h</p>
             </div>
             <div class="px-5 py-4 text-center">
-                <p class="text-3xl font-bold tabular-nums text-amber-400 leading-none">{{ $urgencyBreakdown['medium'] }}</p>
+                <p class="text-3xl font-bold tabular-nums text-amber-600 leading-none">{{ $urgencyBreakdown['medium'] }}</p>
                 <p class="mt-1.5 section-label">Medium</p>
-                <p class="mt-0.5 text-[11px] text-slate-600">Within 3 days</p>
+                <p class="mt-0.5 text-[11px] text-stone-400">Within 3 days</p>
             </div>
             <div class="px-5 py-4 text-center">
-                <p class="text-3xl font-bold tabular-nums text-slate-500 leading-none">{{ $urgencyBreakdown['low'] }}</p>
+                <p class="text-3xl font-bold tabular-nums text-stone-400 leading-none">{{ $urgencyBreakdown['low'] }}</p>
                 <p class="mt-1.5 section-label">Low priority</p>
-                <p class="mt-0.5 text-[11px] text-slate-600">No urgency</p>
+                <p class="mt-0.5 text-[11px] text-stone-400">No urgency</p>
             </div>
         </div>
     </div>
 
     {{-- ── OPEN DISPUTES LIST ───────────────────────────────────────────── --}}
-    <div class="overflow-hidden rounded-xl bg-slate-800/60 ring-1 ring-white/[0.06]">
-        <div class="flex items-center justify-between border-b border-white/[0.05] px-6 py-4">
-            <h3 class="text-sm font-semibold text-white">Open disputes</h3>
-            <a href="{{ route('admin.disputes.index') }}" class="text-xs font-medium text-sky-400 transition-colors hover:text-sky-300">View all</a>
+    <div class="card overflow-hidden">
+        <div class="flex items-center justify-between border-b border-stone-100 px-6 py-4">
+            <h3 class="text-sm font-semibold text-stone-900">Open disputes</h3>
+            <a href="{{ route('admin.disputes.index') }}" class="text-xs font-medium text-emerald-600 transition-colors hover:text-emerald-700">View all</a>
         </div>
 
         @if($openDisputes->isEmpty())
             <div class="flex flex-col items-center justify-center px-6 py-16 text-center">
-                <svg class="h-16 w-16 text-slate-700" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <svg class="h-16 w-16 text-stone-200" viewBox="0 0 64 64" fill="none" aria-hidden="true">
                     <circle cx="32" cy="32" r="26" stroke="currentColor" stroke-width="1.5"/>
                     <path d="M20 32 C20 32 24 40 32 40 C40 40 44 32 44 32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                     <circle cx="24" cy="24" r="2.5" fill="currentColor"/>
                     <circle cx="40" cy="24" r="2.5" fill="currentColor"/>
                     <path d="M26 18 L32 14 L38 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <p class="mt-4 text-sm font-semibold text-slate-300">No open disputes</p>
-                <p class="mt-1 text-xs text-slate-500">The platform is running smoothly — keep up the great work.</p>
+                <p class="mt-4 text-sm font-semibold text-stone-600">No open disputes</p>
+                <p class="mt-1 text-xs text-stone-400">The platform is running smoothly — keep up the great work.</p>
             </div>
         @else
-            <ul role="list" class="divide-y divide-white/[0.04]">
+            <ul role="list" class="divide-y divide-stone-100">
                 @foreach($disputesWithPriority as $item)
                     @php
                         $dispute = $item['model'];
                         $priority = $item['priority'];
-                        $priorityClass = match($priority) {
-                            'high'   => 'bg-red-500/20 text-red-400 ring-1 ring-red-500/30',
-                            'medium' => 'bg-amber-500/20 text-amber-400 ring-1 ring-amber-500/30',
-                            default  => 'bg-slate-500/20 text-slate-400 ring-1 ring-white/10',
+                        $priorityColor = match($priority) {
+                            'high'   => 'red',
+                            'medium' => 'amber',
+                            default  => 'stone',
                         };
                     @endphp
-                    <li class="flex items-start gap-4 px-6 py-4 transition-colors hover:bg-white/[0.03]">
+                    <li class="flex items-start gap-4 px-6 py-4 transition-colors hover:bg-stone-50">
                         <div class="min-w-0 flex-1">
                             <div class="mb-0.5 flex items-center gap-2">
-                                <span class="font-mono text-xs font-medium text-sky-400">DSP-{{ $dispute->id }}</span>
-                                <span class="text-xs text-slate-500">&bull; Order #{{ $dispute->id }}</span>
+                                <span class="font-mono text-xs font-medium text-stone-500">DSP-{{ $dispute->id }}</span>
+                                <span class="text-xs text-stone-400">&bull; Order #{{ $dispute->id }}</span>
                             </div>
-                            <p class="text-sm font-medium text-white">{{ $dispute->user?->name ?? 'Unknown buyer' }}</p>
-                            <p class="mt-0.5 text-xs text-slate-400">Order total: KSh {{ number_format($dispute->total_amount) }}</p>
+                            <p class="text-sm font-medium text-stone-900">{{ $dispute->user?->name ?? 'Unknown buyer' }}</p>
+                            <p class="mt-0.5 text-xs text-stone-500">Order total: KSh {{ number_format($dispute->total_amount) }}</p>
                         </div>
                         <div class="flex shrink-0 flex-col items-end gap-1.5">
-                            <span class="rounded-full px-2.5 py-1 text-xs font-medium {{ $priorityClass }}">
-                                {{ ucfirst($priority) }}
-                            </span>
-                            <span class="text-xs text-slate-500">{{ $item['age'] }}</span>
+                            <x-ui-badge :color="$priorityColor" size="xs">{{ ucfirst($priority) }}</x-ui-badge>
+                            <span class="text-xs text-stone-400">{{ $item['age'] }}</span>
                         </div>
                     </li>
                 @endforeach

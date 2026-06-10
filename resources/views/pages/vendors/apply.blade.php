@@ -5,15 +5,15 @@
 
         {{-- Header --}}
         <div class="mb-8">
-            <h2 class="text-xl font-semibold text-white">Apply to sell on Shoppa</h2>
-            <p class="mt-1 text-sm text-slate-400">
+            <h2 class="text-xl font-semibold text-stone-900">Apply to sell on Shoppa</h2>
+            <p class="mt-1 text-sm text-stone-500">
                 Join Kenya's only verified electronics marketplace. Reach buyers who trust your devices are genuine.
             </p>
         </div>
 
         {{-- What happens next --}}
-        <div class="mb-8 rounded-2xl bg-slate-800 ring-1 ring-white/5 p-5">
-            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-3">What happens after you apply</p>
+        <div class="mb-8 card p-5">
+            <p class="text-xs font-semibold text-stone-500 uppercase tracking-wide mb-3">What happens after you apply</p>
             <ol class="space-y-3">
                 @foreach([
                     ['icon' => 'user',   'text' => 'We review your application within 2–3 business days.'],
@@ -25,14 +25,14 @@
                         <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white text-xs font-semibold mt-0.5">
                             {{ $i + 1 }}
                         </span>
-                        <p class="text-sm text-slate-300">{{ $step['text'] }}</p>
+                        <p class="text-sm text-stone-600">{{ $step['text'] }}</p>
                     </li>
                 @endforeach
             </ol>
         </div>
 
         {{-- Form --}}
-        <div class="rounded-2xl bg-white ring-1 ring-slate-950/5 shadow-sm p-6">
+        <div class="rounded-xl bg-white ring-1 ring-stone-950/5 shadow-sm p-6">
             <form method="POST" action="{{ route('vendor.apply.store') }}" class="space-y-5">
                 @csrf
 
@@ -72,7 +72,7 @@
                 />
 
                 <div class="pt-2 flex items-center justify-between gap-4">
-                    <a href="{{ route('buyer.dashboard') }}" class="text-sm text-slate-400 hover:text-slate-200 transition-colors">
+                    <a href="{{ route('buyer.dashboard') }}" class="text-sm text-stone-500 hover:text-stone-700 transition-colors">
                         Cancel
                     </a>
                     <x-ui.button type="submit">

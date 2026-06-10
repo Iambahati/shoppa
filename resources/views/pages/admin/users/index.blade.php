@@ -3,8 +3,8 @@
 
     <div class="mb-6 flex items-center justify-between gap-4">
         <div>
-            <h2 class="text-xl font-semibold text-white">Users</h2>
-            <p class="mt-1 text-sm text-slate-400">All platform users and staff accounts.</p>
+            <h2 class="text-xl font-semibold text-stone-900">Users</h2>
+            <p class="mt-1 text-sm text-stone-500">All platform users and staff accounts.</p>
         </div>
         <a href="{{ route('admin.users.create') }}">
             <x-ui.button size="sm">
@@ -22,11 +22,11 @@
                 name="search"
                 value="{{ request('search') }}"
                 placeholder="Search name or email..."
-                class="rounded-lg border-0 py-2 px-3 text-sm bg-slate-700 text-white ring-1 ring-inset ring-white/10 placeholder:text-slate-500 focus:ring-2 focus:ring-sky-500 w-full sm:w-64"
+                class="rounded-lg border-0 py-2 px-3 text-sm bg-white text-stone-900 ring-1 ring-inset ring-stone-300 placeholder:text-stone-400 focus:ring-2 focus:ring-emerald-600 w-full sm:w-64"
             />
             <select
                 name="role"
-                class="rounded-lg border-0 py-2 px-3 text-sm bg-slate-700 text-white ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-sky-500"
+                class="rounded-lg border-0 py-2 px-3 text-sm bg-white text-stone-900 ring-1 ring-inset ring-stone-300 focus:ring-2 focus:ring-emerald-600"
             >
                 <option value="">All roles</option>
                 @foreach($roles as $role)
@@ -45,30 +45,30 @@
     </div>
 
     {{-- Table --}}
-    <div class="rounded-2xl bg-slate-800 ring-1 ring-white/5 overflow-hidden">
+    <div class="card overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-white/5">
-                <thead class="bg-slate-900">
+            <table class="min-w-full divide-y divide-stone-100">
+                <thead class="bg-stone-50">
                     <tr>
                         @foreach(['Name', 'Email', 'Phone', 'Role', 'Joined', ''] as $h)
-                            <th class="px-5 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wide">{{ $h }}</th>
+                            <th class="table-th">{{ $h }}</th>
                         @endforeach
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-white/5">
+                <tbody class="divide-y divide-stone-100">
                     @forelse($users as $user)
-                        <tr class="hover:bg-white/5 transition-colors">
-                            <td class="px-5 py-4">
+                        <tr class="hover:bg-stone-50 transition-colors">
+                            <td class="table-td">
                                 <div class="flex items-center gap-3">
-                                    <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sky-600 text-xs font-semibold text-white uppercase">
+                                    <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-xs font-semibold text-white uppercase">
                                         {{ substr($user->name, 0, 2) }}
                                     </span>
-                                    <span class="text-sm font-medium text-white">{{ $user->name }}</span>
+                                    <span class="text-sm font-medium text-stone-900">{{ $user->name }}</span>
                                 </div>
                             </td>
-                            <td class="px-5 py-4 text-sm text-slate-400">{{ $user->email }}</td>
-                            <td class="px-5 py-4 text-sm text-slate-500">{{ $user->phone ?? '—' }}</td>
-                            <td class="px-5 py-4">
+                            <td class="table-td text-stone-500">{{ $user->email }}</td>
+                            <td class="table-td text-stone-400">{{ $user->phone ?? '—' }}</td>
+                            <td class="table-td">
                                 @php
                                     $roleColor = match($user->role?->name) {
                                         'Super Admin'      => 'red',
@@ -83,17 +83,17 @@
                                 @endphp
                                 <x-ui.badge :color="$roleColor">{{ $user->role?->name ?? 'No role' }}</x-ui.badge>
                             </td>
-                            <td class="px-5 py-4 text-sm text-slate-500">{{ $user->created_at->format('d M Y') }}</td>
-                            <td class="px-5 py-4 text-right">
+                            <td class="table-td text-stone-400">{{ $user->created_at->format('d M Y') }}</td>
+                            <td class="table-td text-right">
                                 <div class="flex items-center justify-end gap-2">
-                                    <a href="{{ route('admin.users.edit', $user) }}" class="text-xs text-sky-400 hover:text-sky-300 font-medium transition-colors">
+                                    <a href="{{ route('admin.users.edit', $user) }}" class="text-xs text-emerald-600 hover:text-emerald-700 font-medium transition-colors">
                                         Edit
                                     </a>
                                     @if($user->id !== auth()->id())
                                         <form method="POST" action="{{ route('admin.users.destroy', $user) }}" class="inline"
                                               onsubmit="return confirm('Remove {{ $user->name }}? This cannot be undone.')">
                                             @csrf @method('DELETE')
-                                            <button type="submit" class="text-xs text-red-400 hover:text-red-300 font-medium transition-colors">
+                                            <button type="submit" class="text-xs text-red-500 hover:text-red-600 font-medium transition-colors">
                                                 Remove
                                             </button>
                                         </form>
@@ -103,7 +103,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-5 py-12 text-center text-sm text-slate-400">
+                            <td colspan="6" class="px-5 py-12 text-center text-sm text-stone-400">
                                 No users found.
                             </td>
                         </tr>
@@ -113,7 +113,7 @@
         </div>
 
         @if($users->hasPages())
-            <div class="px-5 py-4 border-t border-white/5">
+            <div class="px-5 py-4 border-t border-stone-100">
                 {{ $users->links() }}
             </div>
         @endif

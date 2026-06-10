@@ -4,20 +4,20 @@
     <div class="mx-auto max-w-2xl">
 
         <div class="mb-6">
-            <a href="{{ route('vendor.listings.show', $product) }}" class="text-sm text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1 w-fit">
+            <a href="{{ route('vendor.listings.show', $product) }}" class="text-sm text-stone-500 hover:text-stone-700 transition-colors flex items-center gap-1 w-fit">
                 <x-nav-icon name="chevron-r" class="h-4 w-4 rotate-180" /> Back to listing
             </a>
         </div>
 
         <div class="mb-6">
-            <h2 class="text-xl font-semibold text-white">Edit listing</h2>
-            <p class="mt-1 text-sm text-slate-400">
+            <h2 class="text-xl font-semibold text-stone-900">Edit listing</h2>
+            <p class="mt-1 text-sm text-stone-500">
                 Changes to price or description do not affect existing Trust Certificates.
                 Changes to device identity (IMEI, serial) require re-verification.
             </p>
         </div>
 
-        <div class="rounded-2xl bg-white ring-1 ring-slate-950/5 shadow-sm p-6">
+        <div class="rounded-xl bg-white ring-1 ring-stone-950/5 shadow-sm p-6">
             <form method="POST" action="{{ route('vendor.listings.update', $product) }}" class="space-y-5">
                 @csrf @method('PUT')
 
@@ -31,11 +31,11 @@
                 </div>
 
                 <div class="space-y-1">
-                    <label for="product_category_id" class="block text-sm font-medium text-slate-700">
+                    <label for="product_category_id" class="block text-sm font-medium text-stone-700">
                         Category <span class="text-red-500" aria-hidden="true">*</span>
                     </label>
                     <select id="product_category_id" name="product_category_id" required
-                        class="block w-full rounded-lg border-0 py-2 px-3 text-slate-900 ring-1 ring-inset ring-slate-300 text-sm focus:ring-2 focus:ring-inset focus:ring-sky-500">
+                        class="block w-full rounded-lg border-0 py-2 px-3 text-stone-900 ring-1 ring-inset ring-stone-300 text-sm focus:ring-2 focus:ring-inset focus:ring-emerald-600">
                         @foreach($categories as $cat)
                         <option value="{{ $cat->id }}" @selected(old('product_category_id', $product->product_category_id) == $cat->id)>{{ $cat->name }}</option>
                         @foreach($cat->children as $child)
@@ -47,11 +47,11 @@
                 </div>
 
                 <div class="space-y-1">
-                    <label for="condition_grade" class="block text-sm font-medium text-slate-700">
+                    <label for="condition_grade" class="block text-sm font-medium text-stone-700">
                         Condition <span class="text-red-500" aria-hidden="true">*</span>
                     </label>
                     <select id="condition_grade" name="condition_grade" required
-                        class="block w-full rounded-lg border-0 py-2 px-3 text-slate-900 ring-1 ring-inset ring-slate-300 text-sm focus:ring-2 focus:ring-inset focus:ring-sky-500">
+                        class="block w-full rounded-lg border-0 py-2 px-3 text-stone-900 ring-1 ring-inset ring-stone-300 text-sm focus:ring-2 focus:ring-inset focus:ring-emerald-600">
                         @foreach(['new' => 'Brand new', 'like_new' => 'Like new', 'good' => 'Good', 'fair' => 'Fair'] as $val => $label)
                         <option value="{{ $val }}" @selected(old('condition_grade', $product->condition_grade) === $val)>{{ $label }}</option>
                         @endforeach
@@ -66,7 +66,7 @@
                 @endif
 
                 <div class="pt-2 flex items-center justify-between gap-4">
-                    <a href="{{ route('vendor.listings.show', $product) }}" class="text-sm text-slate-400 hover:text-slate-200 transition-colors">Cancel</a>
+                    <a href="{{ route('vendor.listings.show', $product) }}" class="text-sm text-stone-500 hover:text-stone-700 transition-colors">Cancel</a>
                     <x-ui-button type="submit">Save changes</x-ui-button>
                 </div>
             </form>
