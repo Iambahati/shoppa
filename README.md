@@ -1,59 +1,170 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Shoppa
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Trust-as-a-Service electronics marketplace for Kenya and East Africa.**
 
-## About Laravel
+Shoppa does not sell devices. It verifies them.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Every device listed on Shoppa is physically inspected by a licensed Verifier before going live. A cryptographically signed Trust Certificate — queryable by IMEI or serial number — is issued per device. Buyers pay into escrow; funds release to the seller only after the buyer confirms receipt. The result: a marketplace where a counterfeit iPhone 11 dressed as an iPhone 17 Pro Max cannot survive.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## The problem
 
-## Learning Laravel
+Nairobi's second-hand electronics market is broken. Counterfeit hardware modified to present as premium models, stolen devices laundered through informal sellers, and opaque pricing with no recourse. Shoppa is the infrastructure layer that eliminates this — for buyers, sellers, and eventually the whole East African market.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## How it works
 
-## Laravel Sponsors
+```
+Vendor submits listing → Verifier inspects device → Trust Certificate issued
+                                                   ↓
+                         Buyer places order → Escrow holds funds
+                                           → Buyer confirms receipt
+                                           → Funds released to vendor
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Every step is logged to an immutable audit trail. Every status transition is role-gated. Every certificate is UUID-signed and publicly verifiable.
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Tech stack
 
-## Contributing
+| Layer | Choice |
+|---|---|
+| Framework | Laravel 11 (PHP 8.2+) |
+| Auth | Laravel Fortify with custom Blade views |
+| Database | PostgreSQL |
+| Frontend | Blade + Alpine.js + Tailwind CSS |
+| Build | Vite |
+| File storage | Spatie MediaLibrary + S3 |
+| Activity logging | Spatie ActivityLog |
+| Queue | Laravel Queue (database in dev, Redis in prod) |
+| Cache | Redis |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+No React. No Vue. No SPA. All state is server-side.
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Getting started
 
-## Security Vulnerabilities
+```bash
+# 1. Install dependencies
+composer install
+npm install
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# 2. Environment
+cp .env.example .env
+php artisan key:generate
+# Set DB_CONNECTION=pgsql and configure DB_* vars
 
-## License
+# 3. Migrate and seed
+php artisan migrate
+php artisan db:seed
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# 4. Create a Super Admin
+php artisan tinker
+>>> $role = App\Models\Role::where('name', 'Super Admin')->first();
+>>> App\Models\User::create([
+...     'name'     => 'Admin',
+...     'email'    => 'admin@shoppa.co.ke',
+...     'password' => bcrypt('password'),
+...     'role_id'  => $role->id,
+... ])->markEmailAsVerified();
+
+# 5. Start the dev server
+npm run dev
+php artisan serve
+```
+
+---
+
+## Roles
+
+| Role | Access |
+|---|---|
+| Super Admin | Bypasses all gates — full system access |
+| Admin | Full panel minus device certification |
+| Vendor Manager | Vendor approvals, listings, orders |
+| Verifier | **Issues Trust Certificates** — the only role that can certify a device |
+| Customer Service | Disputes, refunds, support tickets |
+| Content Manager | Product catalog, categories |
+| Vendor | Own listings and orders |
+| User (Buyer) | Browse, purchase, escrow |
+| Guest | Browse only |
+
+Public registration assigns the `User` (Buyer) role. Vendors apply and are approved by Admin / Vendor Manager.
+
+---
+
+## The Trust Engine
+
+The verification pipeline is the core product. Devices move through a one-way state machine:
+
+```
+pending → in_review → verified
+                   ↘ rejected
+```
+
+Rules:
+- An IMEI must be unique across all active listings — duplicates are blocked at the DB constraint level.
+- Only the `Verifier` role can call `certify` or `reject`. Cert UUIDs are server-generated; they cannot be set by a vendor.
+- Every status transition is logged via Spatie ActivityLog with the acting user's ID. This is a legal audit requirement.
+- Devices flagged in `theft_reports` are blocked from listing (Sprint 4).
+- Trust Certificates expire after 90 days — configurable via `config('shoppa.trust_cert.valid_days')`.
+
+---
+
+## Routes
+
+| Prefix | Audience |
+|---|---|
+| `/` | Buyers (dashboard, browse, orders) |
+| `/vendor` | Vendors (apply, listings, earnings) |
+| `/admin` | Staff panel (Admin, Verifier, CS, Content Manager) |
+| `/verifier` | Inspection queue and device certification |
+| `/verify/{identifier}` | **Public** — anyone can look up a Trust Certificate by IMEI or serial number |
+
+---
+
+## Sprint roadmap
+
+| Sprint | Focus | Status |
+|---|---|---|
+| S1 | IAM, roles, permissions, auth pages, layouts, base components | ✅ Complete |
+| S2 | Vendor lifecycle, KYC uploads, trust scoring | Next |
+| S3 | Product catalog, device PIM, search | Planned |
+| S4 | Trust Engine — IMEI validation, inspection workflow, cert generation, theft registry | Planned |
+| S5 | Buyer journey — cart, orders, wishlist, escrow confirm | Planned |
+| S6 | Payments (M-Pesa Daraja), escrow state machine, disputes, vendor payouts | Planned |
+
+---
+
+## Development commands
+
+```bash
+# Run tests
+php artisan test
+
+# Re-seed cleanly (drops all tables)
+php artisan migrate:fresh --seed
+
+# Process queued jobs
+php artisan queue:work
+
+# Inspect registered routes
+php artisan route:list --columns=method,uri,name,middleware
+```
+
+---
+
+## Configuration
+
+Business rules live in `config/shoppa.php` — not hardcoded in application logic:
+
+```php
+'escrow'       => ['release_after_days' => 3]
+'verification' => ['fee_min_ksh' => 700, 'fee_max_ksh' => 1000]
+'commission'   => ['default_percent' => 5]
+'trust_cert'   => ['valid_days' => 90]
+```
