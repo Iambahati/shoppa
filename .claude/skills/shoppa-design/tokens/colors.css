@@ -1,0 +1,83 @@
+/* ============================================================
+   Shoppa — Color tokens
+   Emerald = trust / primary action. Stone = warm neutral canvas.
+   Mirrors the Tailwind palette the product actually ships.
+   ============================================================ */
+
+:root {
+  /* ── Primary · Emerald (the "verified" green) ─────────────── */
+  --emerald-50:  #ecfdf5;
+  --emerald-100: #d1fae5;
+  --emerald-200: #a7f3d0;
+  --emerald-300: #6ee7b7;
+  --emerald-400: #34d399;
+  --emerald-500: #10b981;
+  --emerald-600: #059669;  /* primary action */
+  --emerald-700: #047857;  /* primary hover / pressed */
+  --emerald-800: #065f46;
+  --emerald-900: #064e3b;
+  --emerald-950: #022c22;
+
+  /* ── Neutral · Stone (warm grey, never cold) ──────────────── */
+  --stone-50:  #fafaf9;   /* auth page canvas */
+  --stone-100: #f5f5f4;   /* app canvas */
+  --stone-200: #e7e5e4;   /* hairline borders */
+  --stone-300: #d6d3d1;   /* input ring */
+  --stone-400: #a8a29e;   /* placeholder / faint meta */
+  --stone-500: #78716c;   /* secondary text */
+  --stone-600: #57534e;   /* ghost button text */
+  --stone-700: #44403c;   /* body text */
+  --stone-800: #292524;   /* sidebar hover */
+  --stone-900: #1c1917;   /* headings + sidebar surface */
+  --stone-950: #0c0a09;   /* overlay scrim */
+
+  /* ── Semantic accents (status, never brand) ───────────────── */
+  --amber-50:  #fffbeb;   --amber-100: #fef3c7;  --amber-200: #fde68a;
+  --amber-600: #d97706;   --amber-700: #b45309;  --amber-900: #78350f;
+
+  --red-50:  #fef2f2;     --red-200: #fecaca;     --red-400: #f87171;
+  --red-500: #ef4444;     --red-600: #dc2626;     --red-700: #b91c1c;  --red-800: #991b1b;
+
+  --blue-50: #eff6ff;     --blue-200: #bfdbfe;     --blue-600: #2563eb;
+  --blue-700: #1d4ed8;    --blue-800: #1e40af;
+
+  --purple-50: #faf5ff;   --purple-200: #e9d5ff;   --purple-600: #9333ea;
+  --purple-700: #7e22ce;  --purple-800: #6b21a8;
+
+  --white: #ffffff;
+
+  /* ── Semantic aliases (use these in components) ───────────── */
+  --brand:            var(--emerald-600);
+  --brand-hover:      var(--emerald-500);
+  --brand-pressed:    var(--emerald-700);
+  --brand-ink:        var(--emerald-700);   /* emerald text on light */
+  --brand-deep:       var(--emerald-900);
+
+  --surface-page:     var(--stone-50);      /* auth surfaces */
+  --surface-app:      var(--stone-100);     /* dashboard canvas */
+  --surface-card:     var(--white);
+  --surface-sidebar:  var(--stone-900);
+  --surface-muted:    var(--stone-50);      /* table head / inset rows */
+
+  --border-hairline:  var(--stone-200);
+  --border-input:     var(--stone-300);
+  --ring-card:        rgba(12, 10, 9, 0.05);  /* ring-stone-950/5 */
+  --scrim:            rgba(12, 10, 9, 0.40);
+
+  --text-heading:     var(--stone-900);
+  --text-body:        var(--stone-700);
+  --text-secondary:   var(--stone-500);
+  --text-muted:       var(--stone-400);
+  --text-on-brand:    var(--white);
+  --text-on-sidebar:  var(--stone-400);
+
+  --focus-ring:       var(--emerald-600);
+
+  /* status families → bg / text / ring */
+  --status-verified-bg:  var(--emerald-50);  --status-verified-fg:  var(--emerald-700);  --status-verified-ring: rgba(5,150,105,0.20);
+  --status-pending-bg:   var(--amber-50);    --status-pending-fg:   var(--amber-700);    --status-pending-ring:  var(--amber-200);
+  --status-rejected-bg:  var(--red-50);      --status-rejected-fg:  var(--red-700);      --status-rejected-ring: var(--red-200);
+  --status-info-bg:      var(--blue-50);     --status-info-fg:      var(--blue-700);     --status-info-ring:     var(--blue-200);
+  --status-staff-bg:     var(--purple-50);   --status-staff-fg:     var(--purple-700);   --status-staff-ring:    var(--purple-200);
+  --status-neutral-bg:   var(--stone-100);   --status-neutral-fg:   var(--stone-700);    --status-neutral-ring:  var(--stone-200);
+}

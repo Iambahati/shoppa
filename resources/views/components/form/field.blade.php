@@ -1,11 +1,12 @@
+{{-- DS: label sm/medium stone-700, input borderless ring-stone-300, emerald focus ring --}}
 <div class="space-y-1">
-    <label for="{{ $name }}" class="block text-sm font-medium text-slate-700">
+    <label for="{{ $name }}" class="block text-sm font-medium text-stone-700">
         {{ $label }}
         @if($required)<span class="text-red-500 ml-0.5" aria-hidden="true">*</span>@endif
     </label>
 
     @if($hint)
-    <p class="text-xs text-slate-400">{{ $hint }}</p>
+    <p class="text-xs text-stone-400">{{ $hint }}</p>
     @endif
 
     @if($type === 'textarea')
@@ -15,7 +16,7 @@
         rows="4"
         placeholder="{{ $placeholder }}"
         @if($required) required @endif
-        {{ $attributes->merge(['class' => 'block w-full rounded-lg border-0 py-2 px-3 text-slate-900 ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 text-sm focus:ring-2 focus:ring-inset focus:ring-sky-500 ' . ($errors->has($name) ? 'ring-red-400' : '')]) }}>{{ old($name) }}</textarea>
+        {{ $attributes->merge(['class' => 'block w-full rounded-lg border-0 py-2 px-3 text-stone-900 ring-1 ring-inset ring-stone-300 placeholder:text-stone-400 text-sm focus:ring-2 focus:ring-inset focus:ring-emerald-600 ' . ($errors->has($name) ? 'ring-red-400' : '')]) }}>{{ old($name) }}</textarea>
     @else
     <input
         type="{{ $type }}"
@@ -24,7 +25,7 @@
         value="{{ $type !== 'password' ? old($name) : '' }}"
         placeholder="{{ $placeholder }}"
         @if($required) required @endif
-        {{ $attributes->merge(['class' => 'block w-full rounded-lg border-0 py-2 px-3 text-slate-900 ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 text-sm focus:ring-2 focus:ring-inset focus:ring-sky-500 ' . ($errors->has($name) ? 'ring-red-400' : '')]) }} />
+        {{ $attributes->merge(['class' => 'block w-full rounded-lg border-0 py-2 px-3 text-stone-900 ring-1 ring-inset ring-stone-300 placeholder:text-stone-400 text-sm focus:ring-2 focus:ring-inset focus:ring-emerald-600 ' . ($errors->has($name) ? 'ring-red-400' : '')]) }} />
     @endif
 
     @error($name)

@@ -1,0 +1,31 @@
+<!-- @dsCard group="Spacing" viewport="700x150" name="Spacing scale" subtitle="4px base grid" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--white); padding: 24px; color: var(--stone-900); }
+  .row { display: flex; align-items: flex-end; gap: 14px; }
+  .u { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .bar { background: var(--emerald-600); border-radius: 3px; width: 100%; }
+  .u .px { font-size: 11px; color: var(--stone-500); font-family: var(--font-mono); }
+  .u .nm { font-size: 10px; color: var(--stone-400); }
+  .lbl { margin: 0 0 16px; font-size: 12px; color: var(--stone-500); }
+</style>
+</head>
+<body>
+  <p class="lbl">A 4px base grid. Card padding is <b>20 (space-5)</b>; section gaps are <b>32 (space-8)</b>.</p>
+  <div class="row">
+    <div class="u" style="width:18px"><div class="bar" style="height:4px"></div><span class="px">4</span><span class="nm">1</span></div>
+    <div class="u" style="width:22px"><div class="bar" style="height:8px"></div><span class="px">8</span><span class="nm">2</span></div>
+    <div class="u" style="width:26px"><div class="bar" style="height:12px"></div><span class="px">12</span><span class="nm">3</span></div>
+    <div class="u" style="width:30px"><div class="bar" style="height:16px"></div><span class="px">16</span><span class="nm">4</span></div>
+    <div class="u" style="width:36px"><div class="bar" style="height:20px"></div><span class="px">20</span><span class="nm">5</span></div>
+    <div class="u" style="width:42px"><div class="bar" style="height:24px"></div><span class="px">24</span><span class="nm">6</span></div>
+    <div class="u" style="width:52px"><div class="bar" style="height:32px"></div><span class="px">32</span><span class="nm">8</span></div>
+    <div class="u" style="width:64px"><div class="bar" style="height:48px"></div><span class="px">48</span><span class="nm">12</span></div>
+    <div class="u" style="width:78px"><div class="bar" style="height:64px"></div><span class="px">64</span><span class="nm">16</span></div>
+  </div>
+</body>
+</html>

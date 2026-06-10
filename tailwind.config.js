@@ -12,8 +12,8 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                // Inter for UI, fallback to system sans
-                sans: ['Nunito', 'Nunito Variable', ...defaultTheme.fontFamily.sans],
+                // Inter for UI per design system — matches DS token --font-sans
+                sans: ['Inter', ...defaultTheme.fontFamily.sans],
                 mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
             },
 

@@ -1,0 +1,28 @@
+<!-- @dsCard group="Spacing" viewport="700x160" name="Radius" subtitle="Soft, friendly rounding" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--white); padding: 24px; }
+  .row { display: flex; gap: 18px; align-items: flex-end; }
+  .u { text-align: center; }
+  .box { width: 76px; height: 56px; background: var(--emerald-50); box-shadow: inset 0 0 0 1.5px var(--emerald-600); }
+  .u .nm { display:block; margin-top: 8px; font-size: 11px; color: var(--stone-700); font-weight: 600; }
+  .u .px { font-size: 10px; color: var(--stone-400); font-family: var(--font-mono); }
+  .pill { width: 92px; height: 40px; background: var(--emerald-50); box-shadow: inset 0 0 0 1.5px var(--emerald-600); border-radius: var(--radius-full); }
+  .lbl { margin: 0 0 16px; font-size: 12px; color: var(--stone-500); }
+</style>
+</head>
+<body>
+  <p class="lbl">Buttons &amp; inputs use <b>lg (8)</b>; cards use <b>xl (14)</b>; pills &amp; avatars are <b>full</b>.</p>
+  <div class="row">
+    <div class="u"><div class="box" style="border-radius:var(--radius-md)"></div><span class="nm">md</span><span class="px">6 · badges</span></div>
+    <div class="u"><div class="box" style="border-radius:var(--radius-lg)"></div><span class="nm">lg</span><span class="px">8 · buttons</span></div>
+    <div class="u"><div class="box" style="border-radius:var(--radius-xl)"></div><span class="nm">xl</span><span class="px">14 · cards</span></div>
+    <div class="u"><div class="box" style="border-radius:var(--radius-2xl)"></div><span class="nm">2xl</span><span class="px">20 · panels</span></div>
+    <div class="u"><div class="pill"></div><span class="nm">full</span><span class="px">pills</span></div>
+  </div>
+</body>
+</html>

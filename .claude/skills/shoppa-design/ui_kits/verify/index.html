@@ -1,0 +1,27 @@
+<!-- @dsCard group="Verify" viewport="700x900" name="Public Trust Certificate lookup (/verify)" subtitle="Interactive: look up an IMEI — verified, expired, flagged, not found" -->
+<!-- @startingPoint section="Verify" subtitle="Public /verify/{IMEI} — look up a device's Trust Certificate" viewport="800x900" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shoppa — Verify a device</title>
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  html, body { height: 100%; margin: 0; }
+  body { background: var(--stone-50); font-family: var(--font-sans); }
+  #root { min-height: 100%; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" src="VerifyApp.jsx"></script>
+  <script type="text/babel">
+    ReactDOM.createRoot(document.getElementById('root')).render(<VerifyApp />);
+  </script>
+</body>
+</html>

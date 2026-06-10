@@ -1,0 +1,27 @@
+<!-- @dsCard group="Spacing" viewport="700x170" name="Elevation" subtitle="The signature card: hairline ring + soft shadow" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--stone-100); padding: 28px; }
+  .row { display: flex; gap: 22px; }
+  .card { background: var(--white); border-radius: var(--radius-xl); padding: 16px; width: 150px; }
+  .card .nm { font-size: 12px; font-weight: 600; color: var(--stone-800); }
+  .card .px { font-size: 10px; color: var(--stone-400); font-family: var(--font-mono); margin-top: 2px; }
+  .e0 { box-shadow: inset 0 0 0 1px var(--ring-card); }
+  .e1 { box-shadow: inset 0 0 0 1px var(--ring-card), var(--shadow-sm); }
+  .e2 { box-shadow: var(--shadow-md); }
+  .e3 { box-shadow: var(--shadow-lg); }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="card e0"><div class="nm">Ring only</div><div class="px">stone-950/5</div></div>
+    <div class="card e1"><div class="nm">Card ◆</div><div class="px">ring + shadow-sm</div></div>
+    <div class="card e2"><div class="nm">Raised</div><div class="px">shadow-md</div></div>
+    <div class="card e3"><div class="nm">Overlay</div><div class="px">shadow-lg · menus</div></div>
+  </div>
+</body>
+</html>

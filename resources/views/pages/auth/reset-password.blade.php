@@ -1,3 +1,4 @@
+{{-- DS reset-password: stone-700 labels, emerald focus rings --}}
 <x-layouts.guest>
     <x-slot:heading>Set new password</x-slot:heading>
 
@@ -9,20 +10,20 @@
             placeholder="you@example.com" :required="true" autocomplete="email" />
 
         <div class="space-y-1">
-            <label for="password" class="block text-sm font-medium text-slate-700">
+            <label for="password" class="block text-sm font-medium text-stone-700">
                 New password <span class="text-red-500" aria-hidden="true">*</span>
             </label>
             <input type="password" id="password" name="password" required autocomplete="new-password"
-                class="block w-full rounded-lg border-0 py-2 px-3 text-sm text-slate-900 ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-inset focus:ring-sky-500 @error('password') ring-red-400 @enderror" />
+                class="block w-full rounded-lg border-0 py-2 px-3 text-sm text-stone-900 ring-1 ring-inset ring-stone-300 focus:ring-2 focus:ring-inset focus:ring-emerald-600 @error('password') ring-red-400 @enderror" />
             @error('password')<p class="text-xs text-red-600">{{ $message }}</p>@enderror
         </div>
 
         <div class="space-y-1">
-            <label for="password_confirmation" class="block text-sm font-medium text-slate-700">
+            <label for="password_confirmation" class="block text-sm font-medium text-stone-700">
                 Confirm new password <span class="text-red-500" aria-hidden="true">*</span>
             </label>
             <input type="password" id="password_confirmation" name="password_confirmation" required autocomplete="new-password"
-                class="block w-full rounded-lg border-0 py-2 px-3 text-sm text-slate-900 ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-inset focus:ring-sky-500" />
+                class="block w-full rounded-lg border-0 py-2 px-3 text-sm text-stone-900 ring-1 ring-inset ring-stone-300 focus:ring-2 focus:ring-inset focus:ring-emerald-600" />
         </div>
 
         <x-ui-button type="submit" class="w-full justify-center">Update password</x-ui-button>

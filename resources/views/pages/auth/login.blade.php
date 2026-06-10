@@ -1,3 +1,4 @@
+{{-- DS login: heading "Welcome back", subheading, email+password, "Keep me signed in", full-width primary --}}
 <x-layouts.guest>
     <x-slot:heading>Welcome back</x-slot:heading>
     <x-slot:subheading>Sign in to your Shoppa account</x-slot:subheading>
@@ -14,19 +15,20 @@
 
         <div class="space-y-1" x-data="{ show: false }">
             <div class="flex items-center justify-between">
-                <label for="password" class="block text-sm font-medium text-slate-700">
+                <label for="password" class="block text-sm font-medium text-stone-700">
                     Password <span class="text-red-500" aria-hidden="true">*</span>
                 </label>
                 @if(Route::has('password.request'))
-                <a href="{{ route('password.request') }}" class="text-xs font-medium text-sky-500 transition-colors hover:text-sky-600">
+                {{-- DS link: emerald-600, hover:emerald-700 --}}
+                <a href="{{ route('password.request') }}" class="text-xs font-medium text-emerald-600 transition-colors hover:text-emerald-700">
                     Forgot password?
                 </a>
                 @endif
             </div>
             <div class="relative">
                 <input :type="show ? 'text' : 'password'" id="password" name="password" required autocomplete="current-password"
-                    class="block w-full rounded-lg border-0 py-2 px-3 pr-10 text-sm text-slate-900 ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-inset focus:ring-sky-500 @error('password') ring-red-400 @enderror" />
-                <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 transition-colors hover:text-slate-600" :aria-label="show ? 'Hide password' : 'Show password'">
+                    class="block w-full rounded-lg border-0 py-2 px-3 pr-10 text-sm text-stone-900 ring-1 ring-inset ring-stone-300 focus:ring-2 focus:ring-inset focus:ring-emerald-600 @error('password') ring-red-400 @enderror" />
+                <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 flex items-center pr-3 text-stone-400 transition-colors hover:text-stone-600" :aria-label="show ? 'Hide password' : 'Show password'">
                     <svg x-show="!show" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -40,16 +42,17 @@
         </div>
 
         <div class="flex items-center gap-2">
+            {{-- DS checkbox: emerald-600 accent --}}
             <input type="checkbox" id="remember" name="remember"
-                class="h-4 w-4 rounded border-slate-300 text-sky-500 focus:ring-sky-500" />
-            <label for="remember" class="text-sm text-slate-600">Keep me signed in</label>
+                class="h-4 w-4 rounded border-stone-300 text-emerald-600 focus:ring-emerald-600" />
+            <label for="remember" class="text-sm text-stone-600">Keep me signed in</label>
         </div>
 
         <x-ui-button type="submit" class="w-full justify-center">Sign in</x-ui-button>
     </form>
 
-    <p class="mt-6 text-center text-sm text-slate-500">
-        No account?
-        <a href="{{ route('register') }}" class="font-medium text-sky-500 transition-colors hover:text-sky-600">Create one free</a>
+    <p class="mt-6 text-center text-sm text-stone-500">
+        Don't have an account?
+        <a href="{{ route('register') }}" class="font-medium text-emerald-600 transition-colors hover:text-emerald-700">Create one free</a>
     </p>
 </x-layouts.guest>
