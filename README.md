@@ -1,55 +1,170 @@
-<p align="center">
-  <strong>Shoppa</strong> is a feature-rich, role-aware e-commerce dashboard for vendors, buyers, and administrators built with Laravel 12.
-</p>
+# Shoppa
 
-## About Shoppa
+**Trust-as-a-Service electronics marketplace for Kenya and East Africa.**
 
-Shoppa emulates a boutique marketplace: buyers place orders and request returns, vendors fulfill shipments, and an admin team manages disputes, products, and promotions. The app arrives with domain models (orders, refunds, shipments, vendors, coupon campaigns, etc.) plus role-driven navigation powered by policy-aware enums and seeders that provision the staff/user roles and relations needed for an admin dashboard and public storefront.
+Shoppa does not sell devices. It verifies them.
 
-Key highlights:
+Every device listed on Shoppa is physically inspected by a licensed Verifier before going live. A cryptographically signed Trust Certificate — queryable by IMEI or serial number — is issued per device. Buyers pay into escrow; funds release to the seller only after the buyer confirms receipt. The result: a marketplace where a counterfeit iPhone 11 dressed as an iPhone 17 Pro Max cannot survive.
 
-- Multi-tenant user roles (Super Admin, Admin, Vendor, Customer Service, Buyer) with helper enums that drive dashboard redirects and permissions.
-- Rich order lifecycle models (returns, refunds, shipments, commissions) and cascading tables to analyze vendor revenue and customer history.
-- Seeders that prime every model needed to explore the domain (roles, permissions, users, addresses, vendor profiles, etc.).
-- Laravel Fortify authentication with email verification, two-factor auth helpers, and policy-aware user authorization.
+---
 
-## Getting Started
+## The problem
 
-1. Copy the environment file and generate keys:
-   ```bash
-   cp .env.example .env
-   composer install
-   php artisan key:generate
-   ```
-2. Configure your database/queue/MAIL settings in `.env`, then migrate:
-   ```bash
-   php artisan migrate
-   ```
-3. Seed the database (roles, permissions, users, vendors, addresses, etc.):
-   ```bash
-   php artisan db:seed
-   ```
-4. Build assets and serve the app:
-   ```bash
-   npm install
-   npm run dev
-   php artisan serve
-   ```
+Nairobi's second-hand electronics market is broken. Counterfeit hardware modified to present as premium models, stolen devices laundered through informal sellers, and opaque pricing with no recourse. Shoppa is the infrastructure layer that eliminates this — for buyers, sellers, and eventually the whole East African market.
 
-## Seeding Models
+---
 
-The `DatabaseSeeder` orchestrates several sub-seeders defined in `database/seeders/`:
+## How it works
 
-- `RoleSeeder`, `PermissionSeeder`, `RolePermissionSeeder` define the role/permission graph.
-- `UserSeeder` and `UserAddressSeeder` create buyers, vendors, and a Super Admin with the required addresses.
-- `VendorSeeder` links vendor users to vendor profiles and attaches demo media.
+```
+Vendor submits listing → Verifier inspects device → Trust Certificate issued
+                                                   ↓
+                         Buyer places order → Escrow holds funds
+                                           → Buyer confirms receipt
+                                           → Funds released to vendor
+```
 
-After running `php artisan db:seed`, you can browse the admin panel at `/admin`, the vendor workspace at `/vendor`, and the buyer experience at `/buyer` using the seeded accounts.
+Every step is logged to an immutable audit trail. Every status transition is role-gated. Every certificate is UUID-signed and publicly verifiable.
 
-## Running & Testing
+---
 
-- Use `php artisan test` to execute the test suite.
-- To replay jobs/queues: `php artisan queue:work`.
-- Run `php artisan route:list` to inspect registered routes, grouped by middleware and guards.
+## Tech stack
 
-Enjoy exploring Shoppa!
+| Layer | Choice |
+|---|---|
+| Framework | Laravel 11 (PHP 8.2+) |
+| Auth | Laravel Fortify with custom Blade views |
+| Database | PostgreSQL |
+| Frontend | Blade + Alpine.js + Tailwind CSS |
+| Build | Vite |
+| File storage | Spatie MediaLibrary + S3 |
+| Activity logging | Spatie ActivityLog |
+| Queue | Laravel Queue (database in dev, Redis in prod) |
+| Cache | Redis |
+
+No React. No Vue. No SPA. All state is server-side.
+
+---
+
+## Getting started
+
+```bash
+# 1. Install dependencies
+composer install
+npm install
+
+# 2. Environment
+cp .env.example .env
+php artisan key:generate
+# Set DB_CONNECTION=pgsql and configure DB_* vars
+
+# 3. Migrate and seed
+php artisan migrate
+php artisan db:seed
+
+# 4. Create a Super Admin
+php artisan tinker
+>>> $role = App\Models\Role::where('name', 'Super Admin')->first();
+>>> App\Models\User::create([
+...     'name'     => 'Admin',
+...     'email'    => 'admin@shoppa.co.ke',
+...     'password' => bcrypt('password'),
+...     'role_id'  => $role->id,
+... ])->markEmailAsVerified();
+
+# 5. Start the dev server
+npm run dev
+php artisan serve
+```
+
+---
+
+## Roles
+
+| Role | Access |
+|---|---|
+| Super Admin | Bypasses all gates — full system access |
+| Admin | Full panel minus device certification |
+| Vendor Manager | Vendor approvals, listings, orders |
+| Verifier | **Issues Trust Certificates** — the only role that can certify a device |
+| Customer Service | Disputes, refunds, support tickets |
+| Content Manager | Product catalog, categories |
+| Vendor | Own listings and orders |
+| User (Buyer) | Browse, purchase, escrow |
+| Guest | Browse only |
+
+Public registration assigns the `User` (Buyer) role. Vendors apply and are approved by Admin / Vendor Manager.
+
+---
+
+## The Trust Engine
+
+The verification pipeline is the core product. Devices move through a one-way state machine:
+
+```
+pending → in_review → verified
+                   ↘ rejected
+```
+
+Rules:
+- An IMEI must be unique across all active listings — duplicates are blocked at the DB constraint level.
+- Only the `Verifier` role can call `certify` or `reject`. Cert UUIDs are server-generated; they cannot be set by a vendor.
+- Every status transition is logged via Spatie ActivityLog with the acting user's ID. This is a legal audit requirement.
+- Devices flagged in `theft_reports` are blocked from listing (Sprint 4).
+- Trust Certificates expire after 90 days — configurable via `config('shoppa.trust_cert.valid_days')`.
+
+---
+
+## Routes
+
+| Prefix | Audience |
+|---|---|
+| `/` | Buyers (dashboard, browse, orders) |
+| `/vendor` | Vendors (apply, listings, earnings) |
+| `/admin` | Staff panel (Admin, Verifier, CS, Content Manager) |
+| `/verifier` | Inspection queue and device certification |
+| `/verify/{identifier}` | **Public** — anyone can look up a Trust Certificate by IMEI or serial number |
+
+---
+
+## Sprint roadmap
+
+| Sprint | Focus | Status |
+|---|---|---|
+| S1 | IAM, roles, permissions, auth pages, layouts, base components | ✅ Complete |
+| S2 | Vendor lifecycle, KYC uploads, trust scoring | Next |
+| S3 | Product catalog, device PIM, search | Planned |
+| S4 | Trust Engine — IMEI validation, inspection workflow, cert generation, theft registry | Planned |
+| S5 | Buyer journey — cart, orders, wishlist, escrow confirm | Planned |
+| S6 | Payments (M-Pesa Daraja), escrow state machine, disputes, vendor payouts | Planned |
+
+---
+
+## Development commands
+
+```bash
+# Run tests
+php artisan test
+
+# Re-seed cleanly (drops all tables)
+php artisan migrate:fresh --seed
+
+# Process queued jobs
+php artisan queue:work
+
+# Inspect registered routes
+php artisan route:list --columns=method,uri,name,middleware
+```
+
+---
+
+## Configuration
+
+Business rules live in `config/shoppa.php` — not hardcoded in application logic:
+
+```php
+'escrow'       => ['release_after_days' => 3]
+'verification' => ['fee_min_ksh' => 700, 'fee_max_ksh' => 1000]
+'commission'   => ['default_percent' => 5]
+'trust_cert'   => ['valid_days' => 90]
+```
