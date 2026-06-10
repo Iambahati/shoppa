@@ -58,20 +58,5 @@
         </ul>
     </nav>
 
-    {{-- DS user footer: border-t border-stone-800, name=white, role=stone-400 --}}
-    <div class="shrink-0 px-4 pb-5 pt-4 border-t border-stone-800">
-        @auth
-        <div class="flex items-center gap-3">
-            {{-- Avatar: emerald-600 circle with initials --}}
-            <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-[11px] font-semibold uppercase text-white">
-                {{ substr(auth()->user()->name, 0, 2) }}
-            </div>
-            <div class="min-w-0">
-                <p class="truncate text-sm font-medium text-white">{{ auth()->user()->name }}</p>
-                <p class="truncate text-xs text-stone-400">{{ $roleName?->label() ?? 'Member' }}</p>
-            </div>
-        </div>
-        @endauth
-    </div>
 
 </div>

@@ -61,7 +61,7 @@
             </table>
         </div>
         @if($listings->hasPages())
-        <div class="px-5 py-4 border-t border-stone-100">{{ $listings->links() }}</div>
+        <div class="border-t border-stone-100 px-5 py-3.5">{{ $listings->links() }}</div>
         @endif
         @endif
     </div>
