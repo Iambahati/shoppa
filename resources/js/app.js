@@ -5,7 +5,29 @@ import focus from '@alpinejs/focus'
 // Alpine plugins 
 Alpine.plugin(focus)
 
-// Global Alpine stores 
+// Global Alpine stores
+
+/**
+ * theme store — class-based dark/light mode with localStorage persistence
+ * Usage in Blade: $store.theme.toggle()  |  :class="{'text-white': $store.theme.dark}"
+ */
+Alpine.store('theme', {
+    dark: false,
+
+    init() {
+        this.dark = localStorage.theme === 'dark'
+            || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.classList.toggle('dark', this.dark)
+    },
+
+    toggle() {
+        this.dark = !this.dark
+        document.documentElement.classList.toggle('dark', this.dark)
+        localStorage.theme = this.dark ? 'dark' : 'light'
+    },
+})
+
+
 
 /**
  * notifications store
