@@ -28,9 +28,9 @@ class Button extends Component
         };
 
         $variant = match ($this->variant) {
-            'secondary' => 'bg-white text-stone-700 ring-1 ring-inset ring-stone-300 hover:bg-stone-50',
+            'secondary' => 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-200 ring-1 ring-inset ring-stone-300 dark:ring-stone-700 hover:bg-stone-50 dark:hover:bg-stone-700',
             'danger'    => 'bg-red-600 text-white hover:bg-red-500 focus-visible:outline-red-600',
-            'ghost'     => 'text-stone-600 hover:bg-stone-100 hover:text-stone-900',
+            'ghost'     => 'text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 hover:text-stone-900 dark:hover:text-stone-100',
             // DS primary: emerald-600 default, emerald-500 hover
             default     => 'bg-emerald-600 text-white hover:bg-emerald-500 focus-visible:outline-emerald-600',
         };
