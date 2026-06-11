@@ -13,7 +13,7 @@ class ProfileController extends Controller
 {
     public function show(Request $request): View
     {
-        return view('pages.shared.profile', [
+        return view('pages.profile.index', [
             'user' => $request->user()->load('role'),
         ]);
     }
@@ -23,7 +23,7 @@ class ProfileController extends Controller
         $validated = $request->validate([
             'name'  => ['required', 'string', 'max:255'],
             'phone' => ['nullable', 'string', 'max:20'],
-        ]);
+    ]);
 
         $request->user()->update($validated);
 
