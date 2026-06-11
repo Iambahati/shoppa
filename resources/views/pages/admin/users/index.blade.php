@@ -32,14 +32,14 @@
                     name="search"
                     value="{{ request('search') }}"
                     placeholder="Search by name or email…"
-                    class="block w-full rounded-lg border-0 py-2 pl-9 pr-3 text-sm text-stone-900 ring-1 ring-inset ring-stone-300 placeholder:text-stone-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600"
+                    class="form-input pl-9"
                 />
             </div>
 
             {{-- Role filter --}}
             <select
                 name="role"
-                class="rounded-lg border-0 py-2 px-3 text-sm text-stone-900 ring-1 ring-inset ring-stone-300 focus:ring-2 focus:ring-inset focus:ring-emerald-600 bg-white"
+                class="form-input w-auto"
             >
                 <option value="">All roles</option>
                 @foreach($roles as $role)

@@ -27,7 +27,7 @@
             </div>
             <div class="relative">
                 <input :type="show ? 'text' : 'password'" id="password" name="password" required autocomplete="current-password"
-                    class="block w-full rounded-lg border-0 py-2 px-3 pr-10 text-sm text-stone-900 ring-1 ring-inset ring-stone-300 focus:ring-2 focus:ring-inset focus:ring-emerald-600 @error('password') ring-red-400 @enderror" />
+                    class="form-input pr-10 @error('password') ring-red-400 @enderror" />
                 <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 flex items-center pr-3 text-stone-400 transition-colors hover:text-stone-600" :aria-label="show ? 'Hide password' : 'Show password'">
                     <svg x-show="!show" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />

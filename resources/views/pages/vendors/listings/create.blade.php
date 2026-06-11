@@ -15,7 +15,7 @@
             </p>
         </div>
 
-        <div class="rounded-xl bg-white ring-1 ring-stone-950/5 shadow-sm p-6">
+        <div class="card p-6">
             <form method="POST" action="{{ route('vendor.listings.store') }}" class="space-y-5">
                 @csrf
 
@@ -38,7 +38,7 @@
                         Category <span class="text-red-500" aria-hidden="true">*</span>
                     </label>
                     <select id="product_category_id" name="product_category_id" required
-                        class="block w-full rounded-lg border-0 py-2 px-3 text-stone-900 ring-1 ring-inset ring-stone-300 text-sm focus:ring-2 focus:ring-inset focus:ring-emerald-600">
+                        class="form-input">
                         <option value="" disabled selected>Select a category</option>
                         @foreach($categories as $cat)
                         <option value="{{ $cat->id }}" @selected(old('product_category_id')==$cat->id)>{{ $cat->name }}</option>
@@ -54,7 +54,7 @@
                     <div class="space-y-1">
                         <label for="device_type" class="block text-sm font-medium text-stone-700">Device type <span class="text-red-500">*</span></label>
                         <select id="device_type" name="device_type" required
-                            class="block w-full rounded-lg border-0 py-2 px-3 text-stone-900 ring-1 ring-inset ring-stone-300 text-sm focus:ring-2 focus:ring-inset focus:ring-emerald-600">
+                            class="form-input">
                             @foreach(['phone' => 'Phone', 'laptop' => 'Laptop', 'tablet' => 'Tablet', 'other' => 'Other'] as $val => $label)
                             <option value="{{ $val }}" @selected(old('device_type')===$val)>{{ $label }}</option>
                             @endforeach
@@ -63,7 +63,7 @@
                     <div class="space-y-1">
                         <label for="condition_grade" class="block text-sm font-medium text-stone-700">Condition <span class="text-red-500">*</span></label>
                         <select id="condition_grade" name="condition_grade" required
-                            class="block w-full rounded-lg border-0 py-2 px-3 text-stone-900 ring-1 ring-inset ring-stone-300 text-sm focus:ring-2 focus:ring-inset focus:ring-emerald-600">
+                            class="form-input">
                             @foreach(['new' => 'Brand new', 'like_new' => 'Like new', 'good' => 'Good', 'fair' => 'Fair'] as $val => $label)
                             <option value="{{ $val }}" @selected(old('condition_grade')===$val)>{{ $label }}</option>
                             @endforeach

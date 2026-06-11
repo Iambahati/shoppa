@@ -12,7 +12,7 @@
     </div>
 
     @if($products->isEmpty())
-        <div class="rounded-xl bg-white ring-1 ring-stone-950/5 shadow-sm py-20 text-center">
+        <div class="card py-20 text-center">
             <span class="flex h-14 w-14 mx-auto items-center justify-center rounded-full bg-stone-100">
                 <x-nav.icon name="search" class="h-7 w-7 text-stone-400" />
             </span>

@@ -17,7 +17,7 @@
             </p>
         </div>
 
-        <div class="rounded-xl bg-white ring-1 ring-stone-950/5 shadow-sm p-6">
+        <div class="card p-6">
             <form method="POST" action="{{ route('admin.users.store') }}" class="space-y-5">
                 @csrf
 
@@ -36,7 +36,7 @@
                         id="role"
                         name="role"
                         required
-                        class="block w-full rounded-lg border-0 py-2 px-3 text-stone-900 ring-1 ring-inset ring-stone-300 text-sm focus:ring-2 focus:ring-inset focus:ring-emerald-600 @error('role') ring-red-400 @enderror"
+                        class="form-input @error('role') ring-red-400 @enderror"
                     >
                         <option value="" disabled selected>Select a role</option>
                         @foreach($roles as $role)

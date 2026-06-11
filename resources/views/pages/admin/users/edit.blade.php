@@ -12,7 +12,7 @@
             <h2 class="text-xl font-semibold text-stone-900">Edit {{ $user->name }}</h2>
         </div>
 
-        <div class="rounded-xl bg-white ring-1 ring-stone-950/5 shadow-sm p-6">
+        <div class="card p-6">
             <form method="POST" action="{{ route('admin.users.update', $user) }}" class="space-y-5">
                 @csrf @method('PUT')
 
@@ -24,7 +24,7 @@
                         Role <span class="text-red-500" aria-hidden="true">*</span>
                     </label>
                     <select id="role" name="role" required
-                        class="block w-full rounded-lg border-0 py-2 px-3 text-stone-900 ring-1 ring-inset ring-stone-300 text-sm focus:ring-2 focus:ring-inset focus:ring-emerald-600">
+                        class="form-input">
                         @foreach($roles as $role)
                         <option value="{{ $role->name }}" @selected(old('role', $user->role?->name) === $role->name)>
                             {{ $role->name }}

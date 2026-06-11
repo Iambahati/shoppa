@@ -17,7 +17,7 @@
                 Password <span class="text-red-500" aria-hidden="true">*</span>
             </label>
             <input type="password" id="password" name="password" required autocomplete="new-password"
-                class="block w-full rounded-lg border-0 py-2 px-3 text-sm text-stone-900 ring-1 ring-inset ring-stone-300 focus:ring-2 focus:ring-inset focus:ring-emerald-600 @error('password') ring-red-400 @enderror" />
+                class="form-input @error('password') ring-red-400 @enderror" />
             @error('password')<p class="text-xs text-red-600">{{ $message }}</p>@enderror
         </div>
 
@@ -26,7 +26,7 @@
                 Confirm password <span class="text-red-500" aria-hidden="true">*</span>
             </label>
             <input type="password" id="password_confirmation" name="password_confirmation" required autocomplete="new-password"
-                class="block w-full rounded-lg border-0 py-2 px-3 text-sm text-stone-900 ring-1 ring-inset ring-stone-300 focus:ring-2 focus:ring-inset focus:ring-emerald-600" />
+                class="form-input" />
         </div>
 
         {{-- DS trust note: stone-50 bg, stone-200 border, rounded-lg --}}

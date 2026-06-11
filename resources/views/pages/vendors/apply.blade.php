@@ -32,7 +32,7 @@
         </div>
 
         {{-- Form --}}
-        <div class="rounded-xl bg-white ring-1 ring-stone-950/5 shadow-sm p-6">
+        <div class="card p-6">
             <form method="POST" action="{{ route('vendor.apply.store') }}" class="space-y-5">
                 @csrf
 

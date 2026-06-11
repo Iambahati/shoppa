@@ -17,7 +17,7 @@
             </p>
         </div>
 
-        <div class="rounded-xl bg-white ring-1 ring-stone-950/5 shadow-sm p-6">
+        <div class="card p-6">
             <form method="POST" action="{{ route('vendor.listings.update', $product) }}" class="space-y-5">
                 @csrf @method('PUT')
 
@@ -35,7 +35,7 @@
                         Category <span class="text-red-500" aria-hidden="true">*</span>
                     </label>
                     <select id="product_category_id" name="product_category_id" required
-                        class="block w-full rounded-lg border-0 py-2 px-3 text-stone-900 ring-1 ring-inset ring-stone-300 text-sm focus:ring-2 focus:ring-inset focus:ring-emerald-600">
+                        class="form-input">
                         @foreach($categories as $cat)
                         <option value="{{ $cat->id }}" @selected(old('product_category_id', $product->product_category_id) == $cat->id)>{{ $cat->name }}</option>
                         @foreach($cat->children as $child)
@@ -51,7 +51,7 @@
                         Condition <span class="text-red-500" aria-hidden="true">*</span>
                     </label>
                     <select id="condition_grade" name="condition_grade" required
-                        class="block w-full rounded-lg border-0 py-2 px-3 text-stone-900 ring-1 ring-inset ring-stone-300 text-sm focus:ring-2 focus:ring-inset focus:ring-emerald-600">
+                        class="form-input">
                         @foreach(['new' => 'Brand new', 'like_new' => 'Like new', 'good' => 'Good', 'fair' => 'Fair'] as $val => $label)
                         <option value="{{ $val }}" @selected(old('condition_grade', $product->condition_grade) === $val)>{{ $label }}</option>
                         @endforeach

@@ -11,7 +11,7 @@
 
         {{-- Order items --}}
         <div class="lg:col-span-2 space-y-4">
-            <div class="rounded-xl bg-white ring-1 ring-stone-950/5 shadow-sm overflow-hidden">
+            <div class="card overflow-hidden">
                 <div class="px-5 py-4 border-b border-stone-100">
                     <h3 class="text-sm font-semibold text-stone-900">Order #{{ $order->id }}</h3>
                 </div>
@@ -58,7 +58,7 @@
 
         {{-- Sidebar: status + shipment --}}
         <div class="space-y-4">
-            <div class="rounded-xl bg-white ring-1 ring-stone-950/5 shadow-sm p-5">
+            <div class="card p-5">
                 <h4 class="text-sm font-semibold text-stone-900 mb-3">Order status</h4>
                 @php
                 $statusColor = match($order->status?->name) {
@@ -74,7 +74,7 @@
             </div>
 
             @if($order->shipment)
-            <div class="rounded-xl bg-white ring-1 ring-stone-950/5 shadow-sm p-5">
+            <div class="card p-5">
                 <h4 class="text-sm font-semibold text-stone-900 mb-3">Delivery</h4>
                 <p class="text-sm text-stone-700">{{ $order->shipment->carrier }}</p>
                 <p class="text-xs text-stone-400 mt-1 font-mono">{{ $order->shipment->tracking_number }}</p>

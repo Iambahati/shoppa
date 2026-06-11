@@ -10,7 +10,7 @@
             </a>
         </div>
 
-        <div class="rounded-xl bg-white ring-1 ring-stone-950/5 shadow-sm p-6">
+        <div class="card p-6">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-lg font-semibold text-stone-900">Inspection report</h2>
                 <x-trust.cert-badge status="pending" />

@@ -6,7 +6,7 @@
         <p class="mt-1 text-sm text-stone-500">All your purchases — past and present.</p>
     </div>
 
-    <div class="rounded-xl bg-white ring-1 ring-stone-950/5 shadow-sm overflow-hidden">
+    <div class="card overflow-hidden">
         @if($orders->isEmpty())
         <div class="py-16 text-center">
             <x-nav-icon name="box" class="mx-auto h-10 w-10 text-stone-300" />

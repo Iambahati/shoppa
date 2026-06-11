@@ -33,7 +33,7 @@
     </div>
 
     {{-- Queue table --}}
-    <div class="rounded-xl bg-white ring-1 ring-stone-950/5 shadow-sm overflow-hidden">
+    <div class="card overflow-hidden">
         <div class="px-5 py-4 border-b border-stone-100">
             <h3 class="text-sm font-semibold text-stone-900">Pending devices</h3>
         </div>
