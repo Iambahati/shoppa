@@ -10,10 +10,12 @@
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
     {{-- Inter — DS primary typeface --}}
     <link rel="stylesheet" href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap">
+    {{-- Anti-FOUC: set dark class before CSS loads --}}
+    <script>if(localStorage.theme==='dark'||(!localStorage.theme&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark')}</script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="h-full bg-stone-50 font-sans antialiased">
+<body class="h-full bg-stone-50 dark:bg-stone-950 font-sans antialiased transition-colors duration-150">
 
     @include('partials.flash-message')
 
@@ -22,19 +24,19 @@
         {{-- Brand lock-up: wordmark + verified pill --}}
         <div class="mb-8 text-center">
             <a href="{{ route('home') }}" class="inline-flex items-center gap-2 no-underline">
-                <span class="text-2xl font-semibold tracking-tight text-stone-900">Shoppa</span>
+                <span class="text-2xl font-semibold tracking-tight text-stone-900 dark:text-stone-100">Shoppa</span>
                 <x-trust-verified-pill size="sm" />
             </a>
             @isset($heading)
-            <h1 class="mt-6 text-2xl font-semibold text-stone-900 tracking-tight">{{ $heading }}</h1>
+            <h1 class="mt-6 text-2xl font-semibold text-stone-900 dark:text-stone-100 tracking-tight">{{ $heading }}</h1>
             @endisset
             @isset($subheading)
-            <p class="mt-1.5 text-sm text-stone-500">{{ $subheading }}</p>
+            <p class="mt-1.5 text-sm text-stone-500 dark:text-stone-400">{{ $subheading }}</p>
             @endisset
         </div>
 
         {{-- DS card: white, rounded-xl, shadow-sm, ring-1 ring-stone-950/5, py-8 px-6 --}}
-        <div class="w-full max-w-md rounded-xl bg-white py-8 px-6 shadow-sm ring-1 ring-stone-950/5">
+        <div class="w-full max-w-md rounded-xl bg-white dark:bg-stone-900 py-8 px-6 shadow-sm ring-1 ring-stone-950/5 dark:ring-white/5">
             {{ $slot }}
         </div>
 

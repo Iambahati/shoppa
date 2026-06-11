@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 {{-- DS staff shell: stone-100 canvas, stone-900 sidebar, white sticky topbar --}}
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-stone-100">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-stone-100 dark:bg-stone-950">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ isset($title) ? $title . ' — ' : '' }}{{ config('shoppa.name') }} Staff</title>
+    {{-- Anti-FOUC: set dark class before CSS loads --}}
+    <script>if(localStorage.theme==='dark'||(!localStorage.theme&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark')}</script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="h-full bg-stone-100" x-data="{ sidebarOpen: false }">
+<body class="h-full bg-stone-100 dark:bg-stone-950 transition-colors duration-150" x-data="{ sidebarOpen: false }">
 
     {{-- Mobile sidebar scrim — stone-950/40 per DS --}}
     <div x-show="sidebarOpen" x-transition.opacity @click="sidebarOpen = false"
